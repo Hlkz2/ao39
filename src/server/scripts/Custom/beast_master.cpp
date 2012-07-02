@@ -10,7 +10,6 @@ public:
                 if(player->getClass() != CLASS_HUNTER){
 						player->ADD_GOSSIP_ITEM(0, "Au revoir.", GOSSIP_SENDER_MAIN, 3);
 						player->SEND_GOSSIP_MENU(1000005, m_creature->GetGUID());
-                        player->PlayerTalkClass->SendCloseGossip();
                         return;
                 }
 
@@ -62,7 +61,6 @@ public:
                 if(player->getClass() != CLASS_HUNTER){
 						player->ADD_GOSSIP_ITEM(0, "Au revoir.", GOSSIP_SENDER_MAIN, 3);
 						player->SEND_GOSSIP_MENU(1000005, m_creature->GetGUID());
-                        player->PlayerTalkClass->SendCloseGossip();
                         return true;
                 }
 
