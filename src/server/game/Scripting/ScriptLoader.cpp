@@ -1238,6 +1238,8 @@ void AddBattlegroundScripts()
 /* This is where custom scripts' loading functions should be declared. */
 void AddSc_Script_fam();
 void AddSc_Custom_Job();
+void AddSc_Bienvenue();
+void AddSc_News_Serv();
 void AddSc_Script_UTeleporter();
 void AddSC_Random();
 void AddSc_CustomClass();
@@ -1252,6 +1254,8 @@ void AddCustomScripts()
     /* This is where custom scripts should be added. */
     AddSc_Script_fam();
 	AddSc_Custom_Job();
+	AddSc_Bienvenue();
+	AddSc_News_Serv();
     AddSc_Script_UTeleporter();
     AddSC_Random();
 	AddSc_CustomClass();

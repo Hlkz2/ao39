@@ -14,9 +14,9 @@ class class_master : public CreatureScript
 		{
 			player->ADD_GOSSIP_ITEM( 3, "Mise a niveau des sorts, stats et competences" , GOSSIP_SENDER_MAIN, 1);
 			player->ADD_GOSSIP_ITEM( 2, "Apprentissage de la double specalisation" , GOSSIP_SENDER_MAIN, 2);
-			player->ADD_GOSSIP_ITEM( 1, "Vendeur de glyphes" , GOSSIP_SENDER_MAIN, 3);
+			player->ADD_GOSSIP_ITEM( 1, "Vendeur de glyphes." , GOSSIP_SENDER_MAIN, 3);
 			player->ADD_GOSSIP_ITEM( 2, "Reinitialisation des talents" , GOSSIP_SENDER_MAIN, 4);
-			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			player->SEND_GOSSIP_MENU(1000003, creature->GetGUID());
 		}
 
         bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action)

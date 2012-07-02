@@ -11,6 +11,8 @@
 set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
   Custom/beast_master.cpp
+  Custom/bienvenue.cpp
+  Custom/news_serv.cpp
   Custom/job_master.cpp
   Custom/rand_item.cpp
   Custom/universal_teleporter.cpp

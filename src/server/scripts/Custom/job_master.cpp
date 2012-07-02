@@ -49,7 +49,7 @@ class job_master : public CreatureScript
 			player->ADD_GOSSIP_ITEM( 3, "Couture" , GOSSIP_SENDER_MAIN, 1010);
 			player->ADD_GOSSIP_ITEM( 3, "Cuisine." , GOSSIP_SENDER_MAIN, 200);
 			player->ADD_GOSSIP_ITEM( 3, "Secourisme" , GOSSIP_SENDER_MAIN, 201);
-			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			player->SEND_GOSSIP_MENU(1000004, creature->GetGUID());
             return true;
 		}
 
@@ -142,7 +142,7 @@ class job_master : public CreatureScript
 			else
 			
 				player->CLOSE_GOSSIP_MENU();
-				creature->MonsterWhisper("Vous avez deja deux métiers !", player->GetGUID(), false);
+				creature->MonsterWhisper("Vous avez deja deux metiers !", player->GetGUID(), false);
 		
             return true;
         }

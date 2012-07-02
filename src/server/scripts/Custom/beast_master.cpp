@@ -8,7 +8,8 @@ public:
 
         void CreatePet(Player *player, Creature * m_creature, uint32 entry){
                 if(player->getClass() != CLASS_HUNTER){
-                        m_creature->MonsterWhisper("Vous n'etes pas un chasseur !", player->GetGUID());
+						player->ADD_GOSSIP_ITEM(0, "Au revoir.", GOSSIP_SENDER_MAIN, 3);
+						player->SEND_GOSSIP_MENU(1000005, m_creature->GetGUID());
                         player->PlayerTalkClass->SendCloseGossip();
                         return;
                 }
@@ -41,19 +42,15 @@ public:
                 // visual effect for levelup
                 pet->SetUInt32Value(UNIT_FIELD_LEVEL, player->getLevel());
 
-
                 if(!pet->InitStatsForLevel(player->getLevel()))
                         sLog->outError ("Pet Create fail: no init stats for entry %u", entry);
 
                 pet->UpdateAllStats();
-
                 // caster have pet now
                 player->SetMinion(pet, true);
-
                 pet->SavePetToDB(PET_SAVE_AS_CURRENT);
                 pet->InitTalentForLevel();
                 player->PetSpellInitialize();
-
                 //end
                 player->PlayerTalkClass->SendCloseGossip();
                 m_creature->MonsterWhisper("Familier ajouté.", player->GetGUID());
@@ -63,7 +60,9 @@ public:
         bool OnGossipHello(Player *player, Creature * m_creature){
 
                 if(player->getClass() != CLASS_HUNTER){
-                        m_creature->MonsterWhisper("Vous n'êtes pas un chasseur !", player->GetGUID());
+						player->ADD_GOSSIP_ITEM(0, "Au revoir.", GOSSIP_SENDER_MAIN, 3);
+						player->SEND_GOSSIP_MENU(1000005, m_creature->GetGUID());
+                        player->PlayerTalkClass->SendCloseGossip();
                         return true;
                 }
 
@@ -71,7 +70,7 @@ public:
                 player->ADD_GOSSIP_ITEM(2, "Ecurie", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_STABLEPET);
                 player->ADD_GOSSIP_ITEM(6, "J'aimerais de quoi nourrir mon familier.", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_VENDOR);
                 player->ADD_GOSSIP_ITEM(5, "Au revoir.", GOSSIP_SENDER_MAIN, 150);
-                player->SEND_GOSSIP_MENU(1, m_creature->GetGUID());
+                player->SEND_GOSSIP_MENU(1000008, m_creature->GetGUID());
                 return true;
         }
 
@@ -83,7 +82,7 @@ public:
                                 player->ADD_GOSSIP_ITEM(2, "Ecurie", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_STABLEPET);
                                 player->ADD_GOSSIP_ITEM(6, "J'aimerais de quoi nourrir mon familier.", GOSSIP_SENDER_MAIN, GOSSIP_OPTION_VENDOR);
                                 player->ADD_GOSSIP_ITEM(5, "Au revoir.", GOSSIP_SENDER_MAIN, 150);
-                                player->SEND_GOSSIP_MENU(1, m_creature->GetGUID());
+                                player->SEND_GOSSIP_MENU(1000008, m_creature->GetGUID());
                         break;
 
                         case 150:

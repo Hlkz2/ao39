@@ -25,7 +25,7 @@ public:
 				pPlayer->ADD_GOSSIP_ITEM(9, "[Duel] Ahn Qiraj", GOSSIP_SENDER_MAIN, 16);
 				pPlayer->ADD_GOSSIP_ITEM(9, ostr.str().c_str(), GOSSIP_SENDER_MAIN, 20);
 				pPlayer->ADD_GOSSIP_ITEM(6, "Dalaran (acces au monde...)", GOSSIP_SENDER_MAIN, 14);
-		pPlayer->SEND_GOSSIP_MENU(1, pCreature->GetGUID());
+		pPlayer->SEND_GOSSIP_MENU(1000006, pCreature->GetGUID());
 	}
 		
 

@@ -9,15 +9,14 @@ class com_talent : public CommandScript
 
        static bool HandleComTalent(ChatHandler* handler, const char* /*args*/)
        {
-			m_session->GetPlayer()->resetTalents(true);
-			m_session->GetPlayer()->SendTalentsInfoData(false);
-			PSendSysMessage(LANG_RESET_TALENTS);
+			handler->GetSession()->GetPlayer()->resetTalents(true);
+			handler->GetSession()->GetPlayer()->SendTalentsInfoData(false);
 			return true;
        }
 
        ChatCommand* GetCommands() const
        {
-           static ChatCommand ArenaCommand[] =
+           static ChatCommand ComTalent[] =
            {
                { "talent",          SEC_PLAYER,			false, &HandleComTalent,	"", NULL },
                { NULL,             0,					false, NULL,				"", NULL }
