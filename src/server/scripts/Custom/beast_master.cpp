@@ -59,7 +59,7 @@ public:
         bool OnGossipHello(Player *player, Creature * m_creature){
 
                 if(player->getClass() != CLASS_HUNTER){
-						player->ADD_GOSSIP_ITEM(0, "Au revoir.", GOSSIP_SENDER_MAIN, 3);
+						player->ADD_GOSSIP_ITEM(0, "Au revoir.", GOSSIP_SENDER_MAIN, 150);
 						player->SEND_GOSSIP_MENU(1000005, m_creature->GetGUID());
                         return true;
                 }
