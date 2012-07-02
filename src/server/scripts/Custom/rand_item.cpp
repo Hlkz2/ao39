@@ -162,7 +162,7 @@ l300 :
 	    case 305: player->AddItem(51980, 1); goto l300; break;
 	    case 306: player->AddItem(51996, 1); goto l300; break;
 	    case 307: player->AddItem(51966, 1); goto l300; break;
-	    case 308: player->AddItem(51974, 1); goto l300: break;
+	    case 308: player->AddItem(51974, 1); goto l300; break;
 		case 309: player->AddItem(51976, 1); goto l300; break;
 	    case 310: player->AddItem(51992, 1); goto l300; break;
 	    case 311: player->AddItem(51968, 1); goto l300; break;
