@@ -84,7 +84,7 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 			player->SEND_GOSSIP_MENU(20004, creature->GetGUID());
 		break;
 	    case 1400:	enchid = 1395;	Ench(player, creature, item);	break;
-	    case 1401:	enchid = 368;	Ench(player, creature, item);	break;
+	    case 1401:	enchid = 368;	reqil = 1; Ench(player, creature, item);	break;
 	    case 1402:	enchid = 910;	Ench(player, creature, item);	break;
 	    case 1403:	enchid = 1441;	reqil = 1;	Ench(player, creature, item);	break;
 	    case 1404:	enchid = 804;	Ench(player, creature, item);	break;
