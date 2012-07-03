@@ -5628,6 +5628,8 @@ void Player::RepopAtGraveyard()
             data << ClosestGrave->z;
             GetSession()->SendPacket(&data);
 			
+			Sleep(1000);
+			
 			// rez/effets à la mort selon la map
 
 			if (GetZoneId() != 2266)
