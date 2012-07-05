@@ -3,7 +3,7 @@
 class enchant_npc : public CreatureScript {
 public: enchant_npc() : CreatureScript("enchant_npc")	{}
 
-uint8 slotid;	uint32 enchid;	uint32 reqil;	uint32 twoha;
+uint8 slotid;	uint32 enchid;	uint32 reqil;	uint32 twoha; uint32 agod;
 
 bool OnGossipHello(Player *player, Creature * creature) {
 	MainMenu(player, creature);
@@ -11,7 +11,7 @@ bool OnGossipHello(Player *player, Creature * creature) {
 
 void MainMenu(Player *player, Creature *creature) {
 
-		slotid = 0; enchid = 0; reqil = 0; twoha = 0; Item *item;
+		slotid = 0; enchid = 0; reqil = 0; twoha = 0; agod = 0; Item *item;
 		
         player->ADD_GOSSIP_ITEM(0, "Dos", GOSSIP_SENDER_MAIN, 14);
         player->ADD_GOSSIP_ITEM(0, "Torse", GOSSIP_SENDER_MAIN, 4);
@@ -42,38 +42,28 @@ void Ench(Player *player, Creature *creature, Item *item) {
 		MainMenu(player, creature);
         return;
 	}
-    if ((reqil == 1) && (item->GetTemplate()->ItemLevel <= 34))
-	{
+    if ((reqil == 1) && (item->GetTemplate()->ItemLevel <= 34)) {
 		creature->MonsterWhisper("L'objet n'est pas d'un niveau suffisant.", player->GetGUID());
 		MainMenu(player, creature);
-        return;
-	}
-    if ((twoha == 1) && (item->GetTemplate()->InventoryType != 17))
-	{
+        return; }
+    if ((twoha == 1) && (item->GetTemplate()->InventoryType != 17)) {
 		creature->MonsterWhisper("Cette enchantement requiert une arme a deux mains.", player->GetGUID());
 		MainMenu(player, creature);
-        return;
-	}
+        return; }
 	SpellItemEnchantmentEntry const* enchant_id = sSpellItemEnchantmentStore.LookupEntry(enchid);
-	if (!enchant_id)
-	{
+	if (!enchant_id) {
 		creature->MonsterWhisper("Erreur, si vous recevez ce message, prevenez un administrateur.", player->GetGUID());
 		player->CLOSE_GOSSIP_MENU();
-        return;
-	}
-	if (slotid != 0)
-	{
+        return; }
+	if (slotid != 0) {
 	player->ApplyEnchantment(item, PERM_ENCHANTMENT_SLOT, false);
 	item->SetEnchantment(PERM_ENCHANTMENT_SLOT, enchid, 0, 0);
-	player->ApplyEnchantment(item, PERM_ENCHANTMENT_SLOT, true);
-    return;
-	}
-	else
-	{
+	player->ApplyEnchantment(item, PERM_ENCHANTMENT_SLOT, true); }
+	else {
 	player->ADD_GOSSIP_ITEM(0, "<Retour>", GOSSIP_SENDER_MAIN, 100);
-	player->SEND_GOSSIP_MENU(1000011, creature->GetGUID());
-    return;
-	}
+	player->SEND_GOSSIP_MENU(1000011, creature->GetGUID()); 
+	return; }
+	MainMenu(player, creature);
 }
 
 bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 action) {
@@ -217,10 +207,10 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 		case 706:	enchid = 3858;				Ench(player, creature, item);	break;
 		
 // Armes
-		case 15:	slotid = 15;	goto l153;	break;
-		case 16:	slotid = 16;	l153:
+		case 15:	agod = 1;
+		case 16:	slotid = 16;	if(agod == 1) {	slotid = 15; }
 		case 153:
-			player->ADD_GOSSIP_ITEM(3, "=> Page 2", GOSSIP_SENDER_MAIN, 154);
+			player->ADD_GOSSIP_ITEM(0, "=> Page 2", GOSSIP_SENDER_MAIN, 154);
 			player->ADD_GOSSIP_ITEM(3, "15 force", GOSSIP_SENDER_MAIN, 1502);
 			player->ADD_GOSSIP_ITEM(3, "20 force", GOSSIP_SENDER_MAIN, 1508);
 			player->ADD_GOSSIP_ITEM(3, "15 agilite", GOSSIP_SENDER_MAIN, 1503);
@@ -240,7 +230,7 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 			player->SEND_GOSSIP_MENU(20009, creature->GetGUID());
 			break;
 		case 154:
-			player->ADD_GOSSIP_ITEM(3, "Page 1 <=", GOSSIP_SENDER_MAIN, 153);
+			player->ADD_GOSSIP_ITEM(0, "Page 1 <=", GOSSIP_SENDER_MAIN, 153);
 			player->ADD_GOSSIP_ITEM(3, "Croise", GOSSIP_SENDER_MAIN, 1500);
 			player->ADD_GOSSIP_ITEM(3, "Vol-de-vie", GOSSIP_SENDER_MAIN, 1518);
 			player->ADD_GOSSIP_ITEM(3, "Impie", GOSSIP_SENDER_MAIN, 1519);
