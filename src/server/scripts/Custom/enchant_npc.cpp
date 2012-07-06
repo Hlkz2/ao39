@@ -10,9 +10,7 @@ bool OnGossipHello(Player *player, Creature * creature) {
     return true; }
 
 void MainMenu(Player *player, Creature *creature) {
-
-		slotid = 0; enchid = 0; reqil = 0; twoha = 0; agod = 0; Item *item;
-		
+		slotid = 0; enchid = 0; reqil = 0; twoha = 0; Item *item;
         player->ADD_GOSSIP_ITEM(0, "Dos", GOSSIP_SENDER_MAIN, 14);
         player->ADD_GOSSIP_ITEM(0, "Torse", GOSSIP_SENDER_MAIN, 4);
         player->ADD_GOSSIP_ITEM(0, "Poignets", GOSSIP_SENDER_MAIN, 8);
@@ -21,27 +19,21 @@ void MainMenu(Player *player, Creature *creature) {
         player->ADD_GOSSIP_ITEM(0, "Jambes : Renfort d'armure epais", GOSSIP_SENDER_MAIN, 6);
         player->ADD_GOSSIP_ITEM(0, "Pieds", GOSSIP_SENDER_MAIN, 7);
         player->ADD_GOSSIP_ITEM(0, "Main droite", GOSSIP_SENDER_MAIN, 15);
-        item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, 16);
-        if(item) { if(item->GetTemplate()->SubClass == 6){
-                player->ADD_GOSSIP_ITEM(0, "Bouclier", GOSSIP_SENDER_MAIN, 18); }
-        else {
-                player->ADD_GOSSIP_ITEM(0, "Main gauche", GOSSIP_SENDER_MAIN, 16); } }
-        player->SEND_GOSSIP_MENU(1, creature->GetGUID());
+        item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, 16); if(item) {
+		if(item->GetTemplate()->SubClass == 6)	player->ADD_GOSSIP_ITEM(0, "Bouclier", GOSSIP_SENDER_MAIN, 18);
+        else	player->ADD_GOSSIP_ITEM(0, "Main gauche", GOSSIP_SENDER_MAIN, 16); }
         item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, 17); if(item) {
-			if((item->GetTemplate()->SubClass == 2) || (item->GetTemplate()->SubClass == 3)
-				|| (item->GetTemplate()->SubClass == 18)) {
-					player->ADD_GOSSIP_ITEM(0, "A distance : lunette mortelle", GOSSIP_SENDER_MAIN, 17); } }
+			if((item->GetTemplate()->SubClass == 2) || (item->GetTemplate()->SubClass == 3) || (item->GetTemplate()->SubClass == 18))
+				player->ADD_GOSSIP_ITEM(0, "A distance : lunette mortelle", GOSSIP_SENDER_MAIN, 17); }
 		player->SEND_GOSSIP_MENU(20003, creature->GetGUID()); }
 
 void Ench(Player *player, Creature *creature, Item *item) {
 	item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, slotid );
 	
-	if(!item)
-	{
+	if(!item) {
 		creature->MonsterWhisper("Vous devez vous equiper de l'objet.", player->GetGUID());
 		MainMenu(player, creature);
-        return;
-	}
+        return; }
     if ((reqil == 1) && (item->GetTemplate()->ItemLevel <= 34)) {
 		creature->MonsterWhisper("L'objet n'est pas d'un niveau suffisant.", player->GetGUID());
 		MainMenu(player, creature);
@@ -207,8 +199,8 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 		case 706:	enchid = 3858;				Ench(player, creature, item);	break;
 		
 // Armes
-		case 15:	agod = 1;
-		case 16:	slotid = 16;	if(agod == 1) {	slotid = 15; }
+		case 15:	slotid = 15;	goto l16;	break;
+		case 16:	slotid = 16;	l16:
 		case 153:
 			player->ADD_GOSSIP_ITEM(0, "=> Page 2", GOSSIP_SENDER_MAIN, 154);
 			player->ADD_GOSSIP_ITEM(3, "15 force", GOSSIP_SENDER_MAIN, 1502);
