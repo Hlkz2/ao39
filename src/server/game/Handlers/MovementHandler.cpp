@@ -403,6 +403,15 @@ void WorldSession::HandleMovementOpcodes(WorldPacket & recvData)
                 }
             }
         }
+
+		// new port up system (undermap arène)
+		if (plrMover->InBattleground())
+		{
+			if (plrMover->GetBattleground()->IsPlayerUnderMap(_player, movementInfo.pos.GetPositionX(), movementInfo.pos.GetPositionY(), movementInfo.pos.GetPositionZ()))
+			{
+				plrMover->GetBattleground()->HandlePlayerUnderMap(_player);
+			}
+		}
     }
 }
 

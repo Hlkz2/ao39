@@ -5619,6 +5619,7 @@ void Player::RepopAtGraveyard()
     if (ClosestGrave)
     {
         TeleportTo(ClosestGrave->map_id, ClosestGrave->x, ClosestGrave->y, ClosestGrave->z, GetOrientation());
+		
         if (isDead())                                        // not send if alive, because it used in TeleportTo()
         {
             WorldPacket data(SMSG_DEATH_RELEASE_LOC, 4*4);  // show spirit healer position on minimap
@@ -5630,7 +5631,7 @@ void Player::RepopAtGraveyard()
 			
 			// rez/effets à la mort selon la map
 
-			if (GetZoneId() != 2266)
+			if (GetZoneId() != 2266 || GetMapId() == 489 || GetMapId() == 529)
 			{
 				ResurrectPlayer(1);
 				SpawnCorpseBones();

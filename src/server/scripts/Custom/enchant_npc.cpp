@@ -3,25 +3,25 @@
 class enchant_npc : public CreatureScript {
 public: enchant_npc() : CreatureScript("enchant_npc")	{}
 
-uint8 slotid;	uint32 enchid;	uint32 reqil;	uint32 twoha; uint32 agod;
+uint8 slotid;	uint32 enchid;	uint32 reqil;	uint32 twoha; uint32 slty;
 
 bool OnGossipHello(Player *player, Creature * creature) {
 	MainMenu(player, creature);
     return true; }
 
 void MainMenu(Player *player, Creature *creature) {
-		slotid = 0; enchid = 0; reqil = 0; twoha = 0; Item *item;
+		slotid = 0; enchid = 0; reqil = 0; twoha = 0; slty = 0; Item *item;
         player->ADD_GOSSIP_ITEM(0, "Dos", GOSSIP_SENDER_MAIN, 14);
         player->ADD_GOSSIP_ITEM(0, "Torse", GOSSIP_SENDER_MAIN, 4);
         player->ADD_GOSSIP_ITEM(0, "Poignets", GOSSIP_SENDER_MAIN, 8);
         player->ADD_GOSSIP_ITEM(0, "Mains", GOSSIP_SENDER_MAIN, 9);
         item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, 6); if(item)
-        player->ADD_GOSSIP_ITEM(0, "Jambes : Renfort d'armure epais", GOSSIP_SENDER_MAIN, 6);
+        player->ADD_GOSSIP_ITEM(0, "Jambes : Renfort d'armure épais", GOSSIP_SENDER_MAIN, 6);
         player->ADD_GOSSIP_ITEM(0, "Pieds", GOSSIP_SENDER_MAIN, 7);
-        player->ADD_GOSSIP_ITEM(0, "Main droite", GOSSIP_SENDER_MAIN, 15);
+        player->ADD_GOSSIP_ITEM(0, "Main droite", GOSSIP_SENDER_MAIN, 15);		
         item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, 16); if(item) {
 		if(item->GetTemplate()->SubClass == 6)	player->ADD_GOSSIP_ITEM(0, "Bouclier", GOSSIP_SENDER_MAIN, 18);
-        else	player->ADD_GOSSIP_ITEM(0, "Main gauche", GOSSIP_SENDER_MAIN, 16); }
+        else { if(item->GetTemplate()->Class != 4) player->ADD_GOSSIP_ITEM(0, "Main gauche", GOSSIP_SENDER_MAIN, 16); } }
         item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, 17); if(item) {
 			if((item->GetTemplate()->SubClass == 2) || (item->GetTemplate()->SubClass == 3) || (item->GetTemplate()->SubClass == 18))
 				player->ADD_GOSSIP_ITEM(0, "A distance : lunette mortelle", GOSSIP_SENDER_MAIN, 17); }
@@ -31,20 +31,33 @@ void Ench(Player *player, Creature *creature, Item *item) {
 	item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, slotid );
 	
 	if(!item) {
-		creature->MonsterWhisper("Vous devez vous equiper de l'objet.", player->GetGUID());
+		creature->MonsterWhisper("Vous devez vous équiper de l'objet.", player->GetGUID());
 		MainMenu(player, creature);
         return; }
-    if ((reqil == 1) && (item->GetTemplate()->ItemLevel <= 34)) {
+    if (reqil == 1 && item->GetTemplate()->ItemLevel <= 34) {
 		creature->MonsterWhisper("L'objet n'est pas d'un niveau suffisant.", player->GetGUID());
 		MainMenu(player, creature);
         return; }
-    if ((twoha == 1) && (item->GetTemplate()->InventoryType != 17)) {
-		creature->MonsterWhisper("Cette enchantement requiert une arme a deux mains.", player->GetGUID());
+    if (twoha == 1 && item->GetTemplate()->InventoryType != 17) {
+		creature->MonsterWhisper("Cette enchantement requiert une arme à deux mains.", player->GetGUID());
 		MainMenu(player, creature);
         return; }
+	if (slotid == 16) {
+	if (item->GetTemplate()->Class == 4) {
+		creature->MonsterWhisper("Je n'enchante pas ce genre d'objets.", player->GetGUID());
+		player->CLOSE_GOSSIP_MENU();
+        return; }
+	if(item->GetTemplate()->SubClass == 6 && slty == 1) {
+		creature->MonsterWhisper("Un enchantement d'arme ne va pas sur un bouclier.", player->GetGUID());
+		player->CLOSE_GOSSIP_MENU();
+		return; }
+	if(item->GetTemplate()->SubClass != 6 && slty == 0) {
+		creature->MonsterWhisper("Un enchantement de bouclier ne va pas sur ce type d'arme.", player->GetGUID());
+		player->CLOSE_GOSSIP_MENU();
+		return; } }
 	SpellItemEnchantmentEntry const* enchant_id = sSpellItemEnchantmentStore.LookupEntry(enchid);
 	if (!enchant_id) {
-		creature->MonsterWhisper("Erreur, si vous recevez ce message, prevenez un administrateur.", player->GetGUID());
+		creature->MonsterWhisper("L'enchantement sélectionné n'est pas un enchantement, prévenez un administrateur.", player->GetGUID());
 		player->CLOSE_GOSSIP_MENU();
         return; }
 	if (slotid != 0) {
@@ -71,17 +84,17 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 			slotid = 14;
 			player->ADD_GOSSIP_ITEM(3, "70 armure", GOSSIP_SENDER_MAIN, 1412);
 			player->ADD_GOSSIP_ITEM(3, "120 armure", GOSSIP_SENDER_MAIN, 1407);
-			player->ADD_GOSSIP_ITEM(3, "5 resistances", GOSSIP_SENDER_MAIN, 1413);
-			player->ADD_GOSSIP_ITEM(3, "7 resistances", GOSSIP_SENDER_MAIN, 1408);
-			player->ADD_GOSSIP_ITEM(3, "12 agilite", GOSSIP_SENDER_MAIN, 1401);
+			player->ADD_GOSSIP_ITEM(3, "5 résistances", GOSSIP_SENDER_MAIN, 1413);
+			player->ADD_GOSSIP_ITEM(3, "7 résistances", GOSSIP_SENDER_MAIN, 1408);
+			player->ADD_GOSSIP_ITEM(3, "12 agilité", GOSSIP_SENDER_MAIN, 1401);
 			player->ADD_GOSSIP_ITEM(3, "12 esquive", GOSSIP_SENDER_MAIN, 1406);
-			player->ADD_GOSSIP_ITEM(3, "12 defense", GOSSIP_SENDER_MAIN, 1411);
-			player->ADD_GOSSIP_ITEM(3, "20 penetration des sorts", GOSSIP_SENDER_MAIN, 1409);
-			player->ADD_GOSSIP_ITEM(3, "10 resistance ombre", GOSSIP_SENDER_MAIN, 1404);
-			player->ADD_GOSSIP_ITEM(3, "15 resistance ombre", GOSSIP_SENDER_MAIN, 1403);
-			player->ADD_GOSSIP_ITEM(3, "15 resistance feu", GOSSIP_SENDER_MAIN, 1405);
-			player->ADD_GOSSIP_ITEM(3, "15 resistance arcane", GOSSIP_SENDER_MAIN, 1410);
-			player->ADD_GOSSIP_ITEM(3, "15 resistance nature", GOSSIP_SENDER_MAIN, 1400);
+			player->ADD_GOSSIP_ITEM(3, "12 défense", GOSSIP_SENDER_MAIN, 1411);
+			player->ADD_GOSSIP_ITEM(3, "20 pénétration des sorts", GOSSIP_SENDER_MAIN, 1409);
+			player->ADD_GOSSIP_ITEM(3, "10 résistance ombre", GOSSIP_SENDER_MAIN, 1404);
+			player->ADD_GOSSIP_ITEM(3, "15 résistance ombre", GOSSIP_SENDER_MAIN, 1403);
+			player->ADD_GOSSIP_ITEM(3, "15 résistance feu", GOSSIP_SENDER_MAIN, 1405);
+			player->ADD_GOSSIP_ITEM(3, "15 résistance arcane", GOSSIP_SENDER_MAIN, 1410);
+			player->ADD_GOSSIP_ITEM(3, "15 résistance nature", GOSSIP_SENDER_MAIN, 1400);
 			player->ADD_GOSSIP_ITEM(3, "camouflage", GOSSIP_SENDER_MAIN, 1402);
 			player->ADD_GOSSIP_ITEM(0, "=> Retour", GOSSIP_SENDER_MAIN, 100);
 			player->SEND_GOSSIP_MENU(20004, creature->GetGUID());
@@ -107,10 +120,10 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 			player->ADD_GOSSIP_ITEM(3, "100 vie", GOSSIP_SENDER_MAIN, 402);
 			player->ADD_GOSSIP_ITEM(3, "100 mana", GOSSIP_SENDER_MAIN, 403);
 			player->ADD_GOSSIP_ITEM(3, "150 vie", GOSSIP_SENDER_MAIN, 401);
-			player->ADD_GOSSIP_ITEM(3, "4 caracteristique", GOSSIP_SENDER_MAIN, 404);
+			player->ADD_GOSSIP_ITEM(3, "4 caracteristiques", GOSSIP_SENDER_MAIN, 404);
 			player->ADD_GOSSIP_ITEM(3, "6 caracteristiques", GOSSIP_SENDER_MAIN, 400);
 			player->ADD_GOSSIP_ITEM(3, "7 mana par 5 secondes", GOSSIP_SENDER_MAIN, 405);
-			player->ADD_GOSSIP_ITEM(3, "15 resilience", GOSSIP_SENDER_MAIN, 406);
+			player->ADD_GOSSIP_ITEM(3, "15 résilience", GOSSIP_SENDER_MAIN, 406);
 			player->ADD_GOSSIP_ITEM(3, "15 esprit", GOSSIP_SENDER_MAIN, 407);
 			player->ADD_GOSSIP_ITEM(0, "=> Retour", GOSSIP_SENDER_MAIN, 100);
 			player->SEND_GOSSIP_MENU(20005, creature->GetGUID());
@@ -134,7 +147,7 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 			player->ADD_GOSSIP_ITEM(3, "15 puissance des sorts", GOSSIP_SENDER_MAIN, 800);
 			player->ADD_GOSSIP_ITEM(3, "4 caracteristiques", GOSSIP_SENDER_MAIN, 802);
 			player->ADD_GOSSIP_ITEM(3, "9 esprit", GOSSIP_SENDER_MAIN, 808);
-			player->ADD_GOSSIP_ITEM(3, "12 defense", GOSSIP_SENDER_MAIN, 803);
+			player->ADD_GOSSIP_ITEM(3, "12 défense", GOSSIP_SENDER_MAIN, 803);
 			player->ADD_GOSSIP_ITEM(3, "8 mana par les 5 secondes", GOSSIP_SENDER_MAIN, 804);
 			player->ADD_GOSSIP_ITEM(0, "=> Retour", GOSSIP_SENDER_MAIN, 100);
 			player->SEND_GOSSIP_MENU(20006, creature->GetGUID());
@@ -153,14 +166,14 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 		case 9:
 			slotid = 9;
 			player->ADD_GOSSIP_ITEM(3, "15 force", GOSSIP_SENDER_MAIN, 904);
-			player->ADD_GOSSIP_ITEM(3, "15 agilite", GOSSIP_SENDER_MAIN, 901);
+			player->ADD_GOSSIP_ITEM(3, "15 agilité", GOSSIP_SENDER_MAIN, 901);
 			player->ADD_GOSSIP_ITEM(3, "15 toucher", GOSSIP_SENDER_MAIN, 903);
 			player->ADD_GOSSIP_ITEM(3, "10 critique", GOSSIP_SENDER_MAIN, 902);
 			player->ADD_GOSSIP_ITEM(3, "26 puissance d'attaque", GOSSIP_SENDER_MAIN, 905);
 			player->ADD_GOSSIP_ITEM(3, "20 puissance des sorts", GOSSIP_SENDER_MAIN, 906);
-			player->ADD_GOSSIP_ITEM(3, "10 hate", GOSSIP_SENDER_MAIN, 907);
+			player->ADD_GOSSIP_ITEM(3, "10 hâte", GOSSIP_SENDER_MAIN, 907);
 			player->ADD_GOSSIP_ITEM(3, "2% vitesse monture", GOSSIP_SENDER_MAIN, 908);
-			player->ADD_GOSSIP_ITEM(3, "5 peche", GOSSIP_SENDER_MAIN, 900);
+			player->ADD_GOSSIP_ITEM(3, "5 pêche", GOSSIP_SENDER_MAIN, 900);
 			player->ADD_GOSSIP_ITEM(0, "=> Retour", GOSSIP_SENDER_MAIN, 100);
 			player->SEND_GOSSIP_MENU(20007, creature->GetGUID());
 		break;
@@ -181,9 +194,9 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 		case 7:
 			slotid = 7;
 			player->ADD_GOSSIP_ITEM(3, "12 endurance", GOSSIP_SENDER_MAIN, 701);
-			player->ADD_GOSSIP_ITEM(3, "12 agilite", GOSSIP_SENDER_MAIN, 704);
+			player->ADD_GOSSIP_ITEM(3, "12 agilité", GOSSIP_SENDER_MAIN, 704);
 			player->ADD_GOSSIP_ITEM(3, "9 endurance + vitesse mineur", GOSSIP_SENDER_MAIN, 703);
-			player->ADD_GOSSIP_ITEM(3, "6 agilite + vitesse mineur", GOSSIP_SENDER_MAIN, 705);
+			player->ADD_GOSSIP_ITEM(3, "6 agilité + vitesse mineur", GOSSIP_SENDER_MAIN, 705);
 			player->ADD_GOSSIP_ITEM(3, "5 vie et mana par 5 secondes", GOSSIP_SENDER_MAIN, 700);
 			player->ADD_GOSSIP_ITEM(3, "10 toucher et critique", GOSSIP_SENDER_MAIN, 702);
 			player->ADD_GOSSIP_ITEM(3, "5 toucher", GOSSIP_SENDER_MAIN, 706);
@@ -201,12 +214,12 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 // Armes
 		case 15:	slotid = 15;	goto l16;	break;
 		case 16:	slotid = 16;	l16:
-		case 153:
+		case 153:	slty = 1;
 			player->ADD_GOSSIP_ITEM(0, "=> Page 2", GOSSIP_SENDER_MAIN, 154);
 			player->ADD_GOSSIP_ITEM(3, "15 force", GOSSIP_SENDER_MAIN, 1502);
 			player->ADD_GOSSIP_ITEM(3, "20 force", GOSSIP_SENDER_MAIN, 1508);
-			player->ADD_GOSSIP_ITEM(3, "15 agilite", GOSSIP_SENDER_MAIN, 1503);
-			player->ADD_GOSSIP_ITEM(3, "20 agilite", GOSSIP_SENDER_MAIN, 1517);
+			player->ADD_GOSSIP_ITEM(3, "15 agilité", GOSSIP_SENDER_MAIN, 1503);
+			player->ADD_GOSSIP_ITEM(3, "20 agilité", GOSSIP_SENDER_MAIN, 1517);
 			player->ADD_GOSSIP_ITEM(3, "20 esprit", GOSSIP_SENDER_MAIN, 1504);
 			player->ADD_GOSSIP_ITEM(3, "22 intelligence", GOSSIP_SENDER_MAIN, 1505);
 			player->ADD_GOSSIP_ITEM(3, "30 intelligence", GOSSIP_SENDER_MAIN, 1507);
@@ -216,26 +229,26 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 			player->ADD_GOSSIP_ITEM(3, "40 puissance des sorts (blanc)", GOSSIP_SENDER_MAIN, 1509);
 			player->ADD_GOSSIP_ITEM(3, "50 feu et arcanes", GOSSIP_SENDER_MAIN, 1510);
 			player->ADD_GOSSIP_ITEM(3, "54 givre et ombre", GOSSIP_SENDER_MAIN, 1511);
-			player->ADD_GOSSIP_ITEM(3, "5 degats de l'arme", GOSSIP_SENDER_MAIN, 1521);
-			player->ADD_GOSSIP_ITEM(3, "7 degats de l'arme", GOSSIP_SENDER_MAIN, 1506);
+			player->ADD_GOSSIP_ITEM(3, "5 dégâts de l'arme", GOSSIP_SENDER_MAIN, 1521);
+			player->ADD_GOSSIP_ITEM(3, "7 dégâts de l'arme", GOSSIP_SENDER_MAIN, 1506);
 			player->ADD_GOSSIP_ITEM(0, "=> Retour", GOSSIP_SENDER_MAIN, 100);
 			player->SEND_GOSSIP_MENU(20009, creature->GetGUID());
 			break;
 		case 154:
 			player->ADD_GOSSIP_ITEM(0, "Page 1 <=", GOSSIP_SENDER_MAIN, 153);
-			player->ADD_GOSSIP_ITEM(3, "Croise", GOSSIP_SENDER_MAIN, 1500);
+			player->ADD_GOSSIP_ITEM(3, "Croisé", GOSSIP_SENDER_MAIN, 1500);
 			player->ADD_GOSSIP_ITEM(3, "Vol-de-vie", GOSSIP_SENDER_MAIN, 1518);
 			player->ADD_GOSSIP_ITEM(3, "Impie", GOSSIP_SENDER_MAIN, 1519);
 			player->ADD_GOSSIP_ITEM(3, "Flamboyante", GOSSIP_SENDER_MAIN, 1520);
 			player->ADD_GOSSIP_ITEM(3, "Frisson glacial", GOSSIP_SENDER_MAIN, 1522);
-			player->ADD_GOSSIP_ITEM(3, "Tueur de demon", GOSSIP_SENDER_MAIN, 1523);
+			player->ADD_GOSSIP_ITEM(3, "Tueur de démons", GOSSIP_SENDER_MAIN, 1523);
 			player->ADD_GOSSIP_ITEM(3, "Mangouste", GOSSIP_SENDER_MAIN, 1512);
 			player->ADD_GOSSIP_ITEM(3, "Eruption de sort", GOSSIP_SENDER_MAIN, 1513);
-			player->ADD_GOSSIP_ITEM(3, "Maitre de guerre", GOSSIP_SENDER_MAIN, 1514);
-			player->ADD_GOSSIP_ITEM(3, "2M - 25 agilite", GOSSIP_SENDER_MAIN, 1524);
+			player->ADD_GOSSIP_ITEM(3, "Maître de guerre", GOSSIP_SENDER_MAIN, 1514);
+			player->ADD_GOSSIP_ITEM(3, "2M - 25 agilité", GOSSIP_SENDER_MAIN, 1524);
 			player->ADD_GOSSIP_ITEM(3, "2M - 70 puissance d'attaque", GOSSIP_SENDER_MAIN, 1525);
-			player->ADD_GOSSIP_ITEM(3, "2M - 35 agilite", GOSSIP_SENDER_MAIN, 1526);
-			player->ADD_GOSSIP_ITEM(3, "2M - 9 degats de l'arme", GOSSIP_SENDER_MAIN, 1527);
+			player->ADD_GOSSIP_ITEM(3, "2M - 35 agilité", GOSSIP_SENDER_MAIN, 1526);
+			player->ADD_GOSSIP_ITEM(3, "2M - 9 dégâts de l'arme", GOSSIP_SENDER_MAIN, 1527);
 			player->ADD_GOSSIP_ITEM(0, "=> Retour", GOSSIP_SENDER_MAIN, 100);
 			player->SEND_GOSSIP_MENU(20009, creature->GetGUID());
 		break;
@@ -275,10 +288,10 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 			slotid = 16;
 			player->ADD_GOSSIP_ITEM(3, "18 endurance", GOSSIP_SENDER_MAIN, 1803);
 			player->ADD_GOSSIP_ITEM(3, "12 inteligence", GOSSIP_SENDER_MAIN, 1804);
-			player->ADD_GOSSIP_ITEM(3, "12 resilience", GOSSIP_SENDER_MAIN, 1800);
+			player->ADD_GOSSIP_ITEM(3, "12 résilience", GOSSIP_SENDER_MAIN, 1800);
 			player->ADD_GOSSIP_ITEM(3, "36 valeur de blacage", GOSSIP_SENDER_MAIN, 1801);
 			player->ADD_GOSSIP_ITEM(3, "15 score de blocage", GOSSIP_SENDER_MAIN, 1802);
-			player->ADD_GOSSIP_ITEM(3, "5 a toutes les resistances", GOSSIP_SENDER_MAIN, 1805);
+			player->ADD_GOSSIP_ITEM(3, "5 à toutes les résistances", GOSSIP_SENDER_MAIN, 1805);
 			player->ADD_GOSSIP_ITEM(0, "=> Retour", GOSSIP_SENDER_MAIN, 100);
 			player->SEND_GOSSIP_MENU(20010, creature->GetGUID());
 		break;
