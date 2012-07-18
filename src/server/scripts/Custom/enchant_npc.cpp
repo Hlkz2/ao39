@@ -43,7 +43,7 @@ void Ench(Player *player, Creature *creature, Item *item) {
 		MainMenu(player, creature);
         return; }
 	if (slotid == 16) {
-	if (item->GetTemplate()->Class == 4) {
+	if ((item->GetTemplate()->Class == 4) && (item->GetTemplate()->SubClass != 6)) {
 		creature->MonsterWhisper("Je n'enchante pas ce genre d'objets.", player->GetGUID());
 		player->CLOSE_GOSSIP_MENU();
         return; }
