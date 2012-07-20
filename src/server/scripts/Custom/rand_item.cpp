@@ -1,13 +1,9 @@
 #include "ScriptPCH.h"
 
+class rand_item : public CreatureScript {
+	public: rand_item() : CreatureScript("rand_item"){}
 
-class rand_item : public CreatureScript
-{
-public: rand_item() : CreatureScript("rand_item"){ }
-
-
-bool OnGossipHello(Player *player, Creature * m_creature){
-
+void MainMenu(Player *player, Creature *creature) {
 	player->ADD_GOSSIP_ITEM(6, "Rare...", GOSSIP_SENDER_MAIN, 150);
 	player->ADD_GOSSIP_ITEM(6, "Marchandises utiles...", GOSSIP_SENDER_MAIN, 300);
 	player->ADD_GOSSIP_ITEM(6, "Hors set...", GOSSIP_SENDER_MAIN, 200);
@@ -19,28 +15,17 @@ bool OnGossipHello(Player *player, Creature * m_creature){
 	player->ADD_GOSSIP_ITEM(6, "Pisteur / Imposant...", GOSSIP_SENDER_MAIN, 800);
 	player->ADD_GOSSIP_ITEM(6, "Ancien / De maille d'os...", GOSSIP_SENDER_MAIN, 900);
 	player->ADD_GOSSIP_ITEM(6, "Veneur...", GOSSIP_SENDER_MAIN, 950);
-	player->SEND_GOSSIP_MENU(1000009, m_creature->GetGUID());
-    return true;
-}
-
-bool OnGossipSelect(Player *player, Creature * m_creature, uint32 sender, uint32 action){
-    player->PlayerTalkClass->ClearMenus();
-    switch (action){
+	player->ADD_GOSSIP_ITEM(0, "Da test", GOSSIP_SENDER_MAIN, 1000);
+	player->SEND_GOSSIP_MENU(1000009, creature->GetGUID()); }
 	
-	case 100:
-		player->ADD_GOSSIP_ITEM(6, "Rare...", GOSSIP_SENDER_MAIN, 150);
-		player->ADD_GOSSIP_ITEM(6, "Marchandises utiles...", GOSSIP_SENDER_MAIN, 300);
-		player->ADD_GOSSIP_ITEM(6, "Hors set...", GOSSIP_SENDER_MAIN, 200);
-		player->ADD_GOSSIP_ITEM(6, "Régalien / Sombrebrume...", GOSSIP_SENDER_MAIN, 250);
-		player->ADD_GOSSIP_ITEM(6, "Royal / Lunaire...", GOSSIP_SENDER_MAIN, 400);
-		player->ADD_GOSSIP_ITEM(6, "Brigade / Capitaine...", GOSSIP_SENDER_MAIN, 550);
-		player->ADD_GOSSIP_ITEM(6, "Chevaucheur / Forestier...", GOSSIP_SENDER_MAIN, 600);
-		player->ADD_GOSSIP_ITEM(6, "Sorcier...", GOSSIP_SENDER_MAIN, 700);
-		player->ADD_GOSSIP_ITEM(6, "Pisteur / Imposant...", GOSSIP_SENDER_MAIN, 800);
-		player->ADD_GOSSIP_ITEM(6, "Ancien / De maille d'os...", GOSSIP_SENDER_MAIN, 900);
-		player->ADD_GOSSIP_ITEM(6, "Veneur...", GOSSIP_SENDER_MAIN, 950);
-		player->SEND_GOSSIP_MENU(1000009, m_creature->GetGUID());
-	break;
+bool OnGossipHello(Player *player, Creature * creature) { MainMenu(player, creature); return true; }
+	
+bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 action) {
+
+    player->PlayerTalkClass->ClearMenus();
+		switch (action){
+	
+	case 100: MainMenu(player, creature); break;
 
 	case 101: player->CLOSE_GOSSIP_MENU(); break;
 
@@ -57,8 +42,8 @@ l150 :
         player->ADD_GOSSIP_ITEM(6, "Brassards d'Ironaya.", GOSSIP_SENDER_MAIN, 157);
         player->ADD_GOSSIP_ITEM(6, "Lentille verte.", GOSSIP_SENDER_MAIN, 158);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, m_creature->GetGUID());
-	break;
+        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+		break;
 	    case 152: player->AddItem(9388, 1); goto l150; break;
 	    case 153: player->AddItem(9389, 1); goto l150; break;
 	    case 154: player->AddItem(9390, 1); goto l150; break;
@@ -82,8 +67,8 @@ l200 :
         player->ADD_GOSSIP_ITEM(6, "Baguette de braise.", GOSSIP_SENDER_MAIN, 210);
         player->ADD_GOSSIP_ITEM(6, "Kriss sacrificiel.", GOSSIP_SENDER_MAIN, 211);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, m_creature->GetGUID());
-	break;
+        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+		break;
 	    case 202: player->AddItem(7524, 1); goto l200; break;
 	    case 203: player->AddItem(7544, 1); goto l200; break;
 	    case 204: player->AddItem(7533, 1); goto l200; break;
@@ -117,8 +102,8 @@ l250 :
         player->ADD_GOSSIP_ITEM(6, "Poignets de Sombrebrume.", GOSSIP_SENDER_MAIN, 267);
         player->ADD_GOSSIP_ITEM(6, "Cape de Sombrebrume.", GOSSIP_SENDER_MAIN, 268);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, m_creature->GetGUID());
-	break;
+        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+		break;
 	    case 252: player->AddItem(7469, 1); goto l250; break;
 		case 253: player->AddItem(7470, 1); goto l250; break;
 	    case 254: player->AddItem(7471, 1); goto l250; break;
@@ -154,8 +139,8 @@ l300 :
         player->ADD_GOSSIP_ITEM(6, "Garde-épaules lies a la terre.", GOSSIP_SENDER_MAIN, 309);
         player->ADD_GOSSIP_ITEM(6, "Ceinturon lies a la terre.", GOSSIP_SENDER_MAIN, 313);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, m_creature->GetGUID());
-	break;
+        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+		break;
 	    case 302: player->AddItem(51994, 1); goto l300; break;
 	    case 303: player->AddItem(51965, 1); goto l300; break;
 	    case 304: player->AddItem(51973, 1); goto l300; break;
@@ -184,8 +169,8 @@ l400 :
         player->ADD_GOSSIP_ITEM(6, "Manchettes lunaires.", GOSSIP_SENDER_MAIN, 410);
         player->ADD_GOSSIP_ITEM(6, "Ceinture lunaire.", GOSSIP_SENDER_MAIN, 411);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, m_creature->GetGUID());
-	break;
+        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+		break;
 	    case 402: player->AddItem(9906, 1); goto l400; break;
 	    case 403: player->AddItem(9907, 1); goto l400; break;
 	    case 404: player->AddItem(9908, 1); goto l400; break;
@@ -219,8 +204,8 @@ l500 :
         player->ADD_GOSSIP_ITEM(6, "Brassards de la brigade.", GOSSIP_SENDER_MAIN, 567);
         player->ADD_GOSSIP_ITEM(6, "Cape de la brigade.", GOSSIP_SENDER_MAIN, 568);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, m_creature->GetGUID());
-	break;
+        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+		break;
 	    case 552: player->AddItem(7486, 1); goto l500; break;
 	    case 553: player->AddItem(7487, 1); goto l500; break;
 	    case 554: player->AddItem(7488, 1); goto l500; break;
@@ -259,7 +244,7 @@ l600 :
         player->ADD_GOSSIP_ITEM(6, "Corde de forestier.", GOSSIP_SENDER_MAIN, 615);
         player->ADD_GOSSIP_ITEM(6, "Cape de forestier.", GOSSIP_SENDER_MAIN, 616);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, m_creature->GetGUID());
+        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
 	break;
 	    case 602: player->AddItem(15369, 1); goto l600; break;
 	    case 603: player->AddItem(15370, 1); goto l600; break;
@@ -293,8 +278,8 @@ l700 :
         player->ADD_GOSSIP_ITEM(6, "Bracelets de sorcier.", GOSSIP_SENDER_MAIN, 711);
         player->ADD_GOSSIP_ITEM(6, "Cape de sorcier.", GOSSIP_SENDER_MAIN, 712);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, m_creature->GetGUID());
-	break;
+        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+		break;
 	    case 702: player->AddItem(9874, 1); goto l700; break;
 	    case 703: player->AddItem(9882, 1); goto l700; break;
 	    case 704: player->AddItem(9884, 1); goto l700; break;
@@ -321,8 +306,8 @@ l800 :
         player->ADD_GOSSIP_ITEM(6, "Brassards imposants.", GOSSIP_SENDER_MAIN, 809);
         player->ADD_GOSSIP_ITEM(6, "Cape imposante.", GOSSIP_SENDER_MAIN, 810);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, m_creature->GetGUID());
-	break;
+        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+		break;
 	    case 802: player->AddItem(9916, 1); goto l800; break;
 	    case 803: player->AddItem(9917, 1); goto l800; break;
 	    case 804: player->AddItem(9920, 1); goto l800; break;
@@ -349,8 +334,8 @@ l900 :
         player->ADD_GOSSIP_ITEM(6, "Cape de la maille d'os.", GOSSIP_SENDER_MAIN, 911);
         player->ADD_GOSSIP_ITEM(6, "Ceinture de la maille d'os.", GOSSIP_SENDER_MAIN, 912);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, m_creature->GetGUID());
-	break;
+        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+		break;
 	    case 902: player->AddItem(15599, 1); goto l900; break;
 	    case 903: player->AddItem(15607, 1); goto l900; break;
 	    case 904: player->AddItem(15608, 1); goto l900; break;
@@ -376,8 +361,8 @@ l950 :
         player->ADD_GOSSIP_ITEM(6, "Jambières de veneur.", GOSSIP_SENDER_MAIN, 959);
         player->ADD_GOSSIP_ITEM(6, "Epaulieres de veneur.", GOSSIP_SENDER_MAIN, 960);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, m_creature->GetGUID());
-	break;
+        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+		break;
 	    case 952: player->AddItem(9885, 1); goto l950; break;
 		case 953: player->AddItem(9886, 1); goto l950; break;
 	    case 954: player->AddItem(9887, 1); goto l950; break;
@@ -388,10 +373,8 @@ l950 :
 	    case 959: player->AddItem(9893, 1); goto l950; break;
 	    case 960: player->AddItem(9894, 1); goto l950; break;
 		}
-			return true;
-        }
+	return true; }
 };
 
-void AddSC_Random(){
-        new rand_item();
-}
+void AddSc_rand_item() {
+	new rand_item(); }
