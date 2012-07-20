@@ -15,6 +15,7 @@ void MainMenu(Player *player, Creature *creature) {
 	player->SEND_GOSSIP_MENU(1000003, creature->GetGUID()); }
 
 bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) {
+	player->PlayerTalkClass->ClearMenus();
 
 		switch (action) {
 
