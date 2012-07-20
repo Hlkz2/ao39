@@ -1247,6 +1247,7 @@ void AddSc_CustomClass();
 void AddSc_EnchantNpc();
 void AddSc_Com_Arena();
 void AddSc_Com_Talent();
+void AddSc_Com_Rand();
 //boss
 void AddSC_kahz();
 #endif
@@ -1266,6 +1267,7 @@ void AddCustomScripts()
 	AddSc_EnchantNpc();
 	AddSc_Com_Arena();
 	AddSc_Com_Talent();
+	AddSc_Com_Rand();
 	//boss
 	AddSC_kahz();
 #endif

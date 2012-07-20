@@ -21,6 +21,7 @@ set(scripts_STAT_SRCS
   Custom/enchant_npc.cpp
   Custom/comarena.cpp
   Custom/comtalent.cpp
+  Custom/comrand.cpp
  
   Custom/kahz.cpp
 )
