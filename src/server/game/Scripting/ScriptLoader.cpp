@@ -1241,11 +1241,14 @@ void AddSc_Custom_Job();
 void AddSc_Bienvenue();
 void AddSc_News_Serv();
 void AddSc_Script_UTeleporter();
-void AddSC_Random();
+void AddSc_rand_item();
+void AddSc_rand_item2();
 void AddSc_CustomClass();
 void AddSc_EnchantNpc();
 void AddSc_Com_Arena();
 void AddSc_Com_Talent();
+//boss
+void AddSC_kahz();
 #endif
 
 void AddCustomScripts()
@@ -1257,10 +1260,13 @@ void AddCustomScripts()
 	AddSc_Bienvenue();
 	AddSc_News_Serv();
     AddSc_Script_UTeleporter();
-    AddSC_Random();
+    AddSc_rand_item();
+    AddSc_rand_item2();
 	AddSc_CustomClass();
 	AddSc_EnchantNpc();
 	AddSc_Com_Arena();
 	AddSc_Com_Talent();
+	//boss
+	AddSC_kahz();
 #endif
 }

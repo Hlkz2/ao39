@@ -15,11 +15,14 @@ set(scripts_STAT_SRCS
   Custom/news_serv.cpp
   Custom/job_master.cpp
   Custom/rand_item.cpp
+  Custom/rand_item2.cpp
   Custom/universal_teleporter.cpp
   Custom/class_master.cpp
   Custom/enchant_npc.cpp
   Custom/comarena.cpp
   Custom/comtalent.cpp
+ 
+  Custom/kahz.cpp
 )
 
 message("  -> Prepared: Custom")
