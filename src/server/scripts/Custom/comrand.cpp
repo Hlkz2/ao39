@@ -3,27 +3,11 @@
 
 int32 Choix(int32 item_id, int choix) {
     ItemTemplate const* itemProto = sObjectMgr->GetItemTemplate(item_id);
-    if (!itemProto)
-        return 0;
-    if ((!itemProto->RandomProperty) && (!itemProto->RandomSuffix))
-        return 0;
-    if ((itemProto->RandomProperty) && (itemProto->RandomSuffix)) {
-		sLog->outErrorDb("Item template %u : RandomProperty == %u et RandomSuffix == %u, un des deux champs doit être nul", itemProto->ItemId, itemProto->RandomProperty, itemProto->RandomSuffix);
-        return 0; }
-    if (itemProto->RandomProperty) {
-        uint32 randomPropId = choix;
-        ItemRandomPropertiesEntry const* random_id = sItemRandomPropertiesStore.LookupEntry(randomPropId);
-        if (!random_id) {
-            sLog->outErrorDb("L'id d'enchantement #%u est utilisé mais ne figure pas dans 'ItemRandomProperties.dbc'", randomPropId);
-            return 0; }
-        return random_id->ID; }
-    else {
-        uint32 randomPropId = choix;
-        ItemRandomSuffixEntry const* random_id = sItemRandomSuffixStore.LookupEntry(randomPropId);
-        if (!random_id) {
-            sLog->outErrorDb("L'id d'enchantement #%u est utilisé mais ne figure pas dans sItemRandomSuffixStore.", randomPropId);
-            return 0;  }
-        return -int32(random_id->ID); } }
+    if (!itemProto) return 0;
+    uint32 randomPropId = choix;
+	ItemRandomPropertiesEntry const* random_id = sItemRandomPropertiesStore.LookupEntry(randomPropId);
+	if (!random_id) return 0;
+	return random_id->ID; }
 
 void AddItemChoix(Player *player, uint32 item_id, int choix) {
     uint32 noSpaceForCount = 0;
