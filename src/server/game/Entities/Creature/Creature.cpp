@@ -51,6 +51,7 @@
 #include "MoveSplineInit.h"
 #include "MoveSpline.h"
 // apply implementation of the singletons
+#include "Config.h"
 
 TrainerSpell const* TrainerSpellData::Find(uint32 spell_id) const
 {
@@ -2038,9 +2039,13 @@ bool Creature::canCreatureAttack(Unit const* victim, bool /*force*/) const
     if (sMapStore.LookupEntry(GetMapId())->IsDungeon())
         return true;
 
-    //Use AttackDistance in distance check if threat radius is lower. This prevents creature bounce in and out of combat every update tick.
-    float dist = std::max(GetAttackDistance(victim), sWorld->getFloatConfig(CONFIG_THREAT_RADIUS)) + m_CombatDistance;
-
+	//Use AttackDistance in distance check if threat radius is lower. This prevents creature bounce in and out of combat every update tick.
+	float dist;
+	if (GetCreatureTemplate()->rank == 3)
+		dist = std::max(GetAttackDistance(victim), sWorld->getFloatConfig(CONFIG_WORLD_BOSS_THREAT_RADIUS)) + m_CombatDistance;
+	else
+		dist = std::max(GetAttackDistance(victim), sWorld->getFloatConfig(CONFIG_THREAT_RADIUS)) + m_CombatDistance;
+	
     if (Unit* unit = GetCharmerOrOwner())
         return victim->IsWithinDist(unit, dist);
     else

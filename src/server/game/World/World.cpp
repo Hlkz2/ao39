@@ -1002,8 +1002,9 @@ void World::LoadConfigSettings(bool reload)
     m_bool_configs[CONFIG_DEATH_BONES_BG_OR_ARENA]        = ConfigMgr::GetBoolDefault("Death.Bones.BattlegroundOrArena", true);
 
     m_bool_configs[CONFIG_DIE_COMMAND_MODE] = ConfigMgr::GetBoolDefault("Die.Command.Mode", true);
-
+	
     m_float_configs[CONFIG_THREAT_RADIUS] = ConfigMgr::GetFloatDefault("ThreatRadius", 60.0f);
+    m_float_configs[CONFIG_WORLD_BOSS_THREAT_RADIUS] = ConfigMgr::GetFloatDefault("WorldBossThreatRadius", 140.0f);
 
     // always use declined names in the russian client
     m_bool_configs[CONFIG_DECLINED_NAMES_USED] =
