@@ -163,7 +163,7 @@ GroupQueueInfo* BattlegroundQueue::AddGroup(Player* leader, Group* grp, Battlegr
     {
         ArenaTeam* Team = sArenaTeamMgr->GetArenaTeamById(arenateamid);
         if (Team)
-            sWorld->SendWorldText(LANG_ARENA_QUEUE_ANNOUNCE_WORLD_JOIN, Team->GetName().c_str(), ginfo->ArenaType, ginfo->ArenaType, ginfo->ArenaTeamRating);
+            sWorld->SendWorldText(LANG_ARENA_QUEUE_ANNOUNCE_WORLD_JOIN, ArenaType, ArenaType, Team->GetName().c_str(), ginfo->ArenaTeamRating);
     }
 
     //add players from group to ginfo
@@ -217,13 +217,21 @@ GroupQueueInfo* BattlegroundQueue::AddGroup(Player* leader, Group* grp, Battlegr
                 if (sWorld->getBoolConfig(CONFIG_BATTLEGROUND_QUEUE_ANNOUNCER_PLAYERONLY))
                 {
                     ChatHandler(leader).PSendSysMessage(LANG_BG_QUEUE_ANNOUNCE_SELF, bgName, q_min_level, q_max_level,
-                        qAlliance, (MinPlayers > qAlliance) ? MinPlayers - qAlliance : (uint32)0, qHorde, (MinPlayers > qHorde) ? MinPlayers - qHorde : (uint32)0);
+                        qAlliance, (MinPlayers > qAlliance) ? MinPlayers : (uint32)0, qHorde, (MinPlayers > qHorde) ? MinPlayers : (uint32)0);
+
+                    ChatHandler(leader).PSendSysMessage(LANG_BG_QUEUE_ANNOUNCE_SELF, bgName, q_min_level, q_max_level,
+                        qAlliance, (MinPlayers > qAlliance) ? MinPlayers : (uint32)0, qHorde, (MinPlayers > qHorde) ? MinPlayers : (uint32)0);
                 }
                 // System message
                 else
                 {
-                    sWorld->SendWorldText(LANG_BG_QUEUE_ANNOUNCE_WORLD, bgName, q_min_level, q_max_level,
-                        qAlliance, (MinPlayers > qAlliance) ? MinPlayers - qAlliance : (uint32)0, qHorde, (MinPlayers > qHorde) ? MinPlayers - qHorde : (uint32)0);
+					if (MinPlayers == 0) {
+					sWorld->SendWorldText(LANG_BG_QUEUE_ANNOUNCE_SELF, ArenaType,  ArenaType, qAlliance, qHorde);
+					}
+					else {
+                    sWorld->SendWorldText(LANG_BG_QUEUE_ANNOUNCE_WORLD, bgName,
+                        qAlliance, MinPlayers, qHorde, MinPlayers);
+					}
                 }
             }
         }
