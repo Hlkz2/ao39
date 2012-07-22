@@ -839,13 +839,13 @@ void WorldSession::HandleTurnInPetitionOpcode(WorldPacket & recv_data)
         requiredSignatures = type-1;
 
     // Notify player if signatures are missing
-    if (signatures < requiredSignatures)
+/*    if (signatures < requiredSignatures)
     {
         data.Initialize(SMSG_TURN_IN_PETITION_RESULTS, 4);
         data << (uint32)PETITION_TURN_NEED_MORE_SIGNATURES;
         SendPacket(&data);
         return;
-    }
+    } */
 
     // Proceed with guild/arena team creation
 
