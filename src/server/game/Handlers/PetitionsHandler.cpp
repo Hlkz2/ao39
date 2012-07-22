@@ -50,10 +50,10 @@ enum CharterItemIDs
 
 enum CharterCosts
 {
-    GUILD_CHARTER_COST                            = 10000,
+    GUILD_CHARTER_COST                            = 100000,
     ARENA_TEAM_CHARTER_2v2_COST                   = 20000,
     ARENA_TEAM_CHARTER_3v3_COST                   = 30000,
-    ARENA_TEAM_CHARTER_5v5_COST                   = 50000
+    ARENA_TEAM_CHARTER_5v5_COST                   = 10000
 };
 
 void WorldSession::HandlePetitionBuyOpcode(WorldPacket & recv_data)
@@ -978,8 +978,8 @@ void WorldSession::SendPetitionShowList(uint64 guid)
         data << uint32(ARENA_TEAM_CHARTER_5v5);             // charter entry
         data << uint32(CHARTER_DISPLAY_ID);                 // charter display id
         data << uint32(ARENA_TEAM_CHARTER_5v5_COST);        // charter cost
-        data << uint32(5);                                  // unknown
-        data << uint32(5);                                  // required signs?
+        data << uint32(1);                                  // unknown
+        data << uint32(1);                                  // required signs?
     }
 
     SendPacket(&data);
