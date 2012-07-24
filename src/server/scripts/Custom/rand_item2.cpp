@@ -47,7 +47,7 @@ void RandMenu(Player *player, Creature *creature, uint32 item_id, uint32 retour)
 	sLog->outErrorDb("r_i_s[0] (après le retour) : %u", r_i_s);
 	// r_i_s[count2].str().c_str()
 	std::ostringstream testhm;
-	testhm << "[FFA] %s" , r_i_s;
+	testhm << "[FFA] %s";// , r_i_s;
 	sLog->outErrorDb("s : %s", testhm);
 	l1001: player->PlayerTalkClass->ClearMenus();
 	uint32 count; count = 0; l1000:
