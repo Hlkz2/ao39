@@ -308,5 +308,5 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 	return true; }
 };
 
-void AddSc_EnchantNpc() {
+void AddSc_enchant_npc() {
 	new enchant_npc(); }

@@ -78,5 +78,5 @@ bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint3
     return true; }
 };
 
-void AddSc_CustomClass() {
+void AddSc_class_master() {
     new class_master; }

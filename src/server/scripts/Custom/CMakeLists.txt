@@ -14,6 +14,7 @@ set(scripts_STAT_SRCS
   Custom/bienvenue.cpp
   Custom/news_serv.cpp
   Custom/job_master.cpp
+  Custom/char_custom.cpp
   Custom/rand_item.cpp
   Custom/rand_item2.cpp
   Custom/universal_teleporter.cpp

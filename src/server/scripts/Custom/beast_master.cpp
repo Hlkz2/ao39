@@ -134,4 +134,4 @@ bool OnGossipSelect(Player *player, Creature * m_creature, uint32 sender, uint32
     return true; }
 };
 
-void AddSc_Script_fam(){	new beast_master();	}
+void AddSc_beast_master(){	new beast_master();	}

@@ -81,5 +81,5 @@ bool OnGossipSelect(Player* player, Creature* creature, uint32 /*uiSender*/, uin
     return true; }
 };
 
-void AddSc_Script_UTeleporter() {
+void AddSc_universal_teleporter() {
 	new universal_teleporter(); }

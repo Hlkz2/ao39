@@ -13,20 +13,20 @@ int32 Choix(int32 item_id, int choix) {
     if ((!itemProto->RandomProperty) && (!itemProto->RandomSuffix))
         return 0;
     if ((itemProto->RandomProperty) && (itemProto->RandomSuffix)) {
-        sLog->outErrorDb("Item template %u : RandomProperty == %u et RandomSuffix == %u, un des deux champs doit Ítre nul", itemProto->ItemId, itemProto->RandomProperty, itemProto->RandomSuffix);
+        sLog->outErrorDb("Item template %u : RandomProperty == %u et RandomSuffix == %u, un des deux champs doit √™tre nul", itemProto->ItemId, itemProto->RandomProperty, itemProto->RandomSuffix);
         return 0; }
     if (itemProto->RandomProperty) {
         uint32 randomPropId = choix;
         ItemRandomPropertiesEntry const* random_id = sItemRandomPropertiesStore.LookupEntry(randomPropId);
         if (!random_id) {
-            sLog->outErrorDb("L'id d'enchantement #%u est utilisÈ mais ne figure pas dans 'ItemRandomProperties.dbc'", randomPropId);
+            sLog->outErrorDb("L'id d'enchantement #%u est utilis√© mais ne figure pas dans 'ItemRandomProperties.dbc'", randomPropId);
             return 0; }
         return random_id->ID; }
     else {
         uint32 randomPropId = choix;
         ItemRandomSuffixEntry const* random_id = sItemRandomSuffixStore.LookupEntry(randomPropId);
         if (!random_id) {
-            sLog->outErrorDb("L'id d'enchantement #%u est utilisÈ mais ne figure pas dans sItemRandomSuffixStore.", randomPropId);
+            sLog->outErrorDb("L'id d'enchantement #%u est utilis√© mais ne figure pas dans sItemRandomSuffixStore.", randomPropId);
             return 0;  }
         return -int32(random_id->ID); } }
 
@@ -44,8 +44,11 @@ void AddItemChoix(Player *player, uint32 itemId, int choix) {
 
 void RandMenu(Player *player, Creature *creature, uint32 item_id, uint32 retour) {
 	r_i_s = rand_item_suffix(player, item_id);
-	sLog->outErrorDb("r_i_s[0] (aprËs le retour) : %u", r_i_s);
+	sLog->outErrorDb("r_i_s[0] (apr√®s le retour) : %u", r_i_s);
 	// r_i_s[count2].str().c_str()
+	std::ostringstream testhm;
+	testhm << "[FFA] %s" , r_i_s;
+	sLog->outErrorDb("s : %s", testhm);
 	l1001: player->PlayerTalkClass->ClearMenus();
 	uint32 count; count = 0; l1000:
 	if ((count == 30) || (r_i_s == count)) goto l1002;
@@ -58,7 +61,7 @@ void MainMenu(Player *player, Creature *creature) {
 	player->ADD_GOSSIP_ITEM(6, "Rare...", GOSSIP_SENDER_MAIN, 150);
 	player->ADD_GOSSIP_ITEM(6, "Marchandises utiles...", GOSSIP_SENDER_MAIN, 300);
 	player->ADD_GOSSIP_ITEM(6, "Hors set...", GOSSIP_SENDER_MAIN, 200);
-	player->ADD_GOSSIP_ITEM(6, "RÈgalien / Sombrebrume...", GOSSIP_SENDER_MAIN, 250);
+	player->ADD_GOSSIP_ITEM(6, "R√©galien / Sombrebrume...", GOSSIP_SENDER_MAIN, 250);
 	player->ADD_GOSSIP_ITEM(6, "Royal / Lunaire...", GOSSIP_SENDER_MAIN, 400);
 	player->ADD_GOSSIP_ITEM(6, "Brigade / Capitaine...", GOSSIP_SENDER_MAIN, 550);
 	player->ADD_GOSSIP_ITEM(6, "Chevaucheur / Forestier...", GOSSIP_SENDER_MAIN, 600);
@@ -87,10 +90,10 @@ l150 :
     case 150:
         retour = action;
         player->ADD_GOSSIP_ITEM(6, "Garde-bras de Revelosh.", GOSSIP_SENDER_MAIN, 152);
-        player->ADD_GOSSIP_ITEM(6, "SpaliËres de Revelosh.", GOSSIP_SENDER_MAIN, 153);
+        player->ADD_GOSSIP_ITEM(6, "Spali√®res de Revelosh.", GOSSIP_SENDER_MAIN, 153);
         player->ADD_GOSSIP_ITEM(6, "Gants de Revelosh.", GOSSIP_SENDER_MAIN, 154);
-        player->ADD_GOSSIP_ITEM(6, "Poignets dÈterrÈs.", GOSSIP_SENDER_MAIN, 155);
-        player->ADD_GOSSIP_ITEM(6, "ChevaliËre d'aigue marine.", GOSSIP_SENDER_MAIN, 156);
+        player->ADD_GOSSIP_ITEM(6, "Poignets d√©terr√©s.", GOSSIP_SENDER_MAIN, 155);
+        player->ADD_GOSSIP_ITEM(6, "Chevali√®re d'aigue marine.", GOSSIP_SENDER_MAIN, 156);
         player->ADD_GOSSIP_ITEM(6, "Brassards d'Ironaya.", GOSSIP_SENDER_MAIN, 157);
         player->ADD_GOSSIP_ITEM(6, "Lentille verte.", GOSSIP_SENDER_MAIN, 158);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
@@ -133,20 +136,20 @@ l200 :
 	    case 210: item_id = 5215; RandMenu(player, creature, item_id, retour); break;
 	    case 211: item_id = 3187; RandMenu(player, creature, item_id, retour); break;
 		
-/////////////////////// RÈgaliEN/SOMBREBRUME /////////////////////////////
+/////////////////////// R√©galiEN/SOMBREBRUME /////////////////////////////
 
 l250 :
     case 250:
         retour = action;
-        player->ADD_GOSSIP_ITEM(6, "JambiËres RÈgaliennes", GOSSIP_SENDER_MAIN, 252);
-        player->ADD_GOSSIP_ITEM(6, "Chapeau de sorcier RÈgalien.", GOSSIP_SENDER_MAIN, 253);
-        player->ADD_GOSSIP_ITEM(6, "Gants RÈgaliens.", GOSSIP_SENDER_MAIN, 254);
-        player->ADD_GOSSIP_ITEM(6, "Bottes RÈgaliennes.", GOSSIP_SENDER_MAIN, 255);
-        player->ADD_GOSSIP_ITEM(6, "Mantelet RÈgalien.", GOSSIP_SENDER_MAIN, 256);
-        player->ADD_GOSSIP_ITEM(6, "Cape RÈgalienne.", GOSSIP_SENDER_MAIN, 257);
-        player->ADD_GOSSIP_ITEM(6, "Crispins RÈgaliens.", GOSSIP_SENDER_MAIN, 258);
-        player->ADD_GOSSIP_ITEM(6, "Echarpe RÈgalienne.", GOSSIP_SENDER_MAIN, 259);
-        player->ADD_GOSSIP_ITEM(6, "Etoile RÈgalienne.", GOSSIP_SENDER_MAIN, 260);
+        player->ADD_GOSSIP_ITEM(6, "Jambi√®res R√©galiennes", GOSSIP_SENDER_MAIN, 252);
+        player->ADD_GOSSIP_ITEM(6, "Chapeau de sorcier R√©galien.", GOSSIP_SENDER_MAIN, 253);
+        player->ADD_GOSSIP_ITEM(6, "Gants R√©galiens.", GOSSIP_SENDER_MAIN, 254);
+        player->ADD_GOSSIP_ITEM(6, "Bottes R√©galiennes.", GOSSIP_SENDER_MAIN, 255);
+        player->ADD_GOSSIP_ITEM(6, "Mantelet R√©galien.", GOSSIP_SENDER_MAIN, 256);
+        player->ADD_GOSSIP_ITEM(6, "Cape R√©galienne.", GOSSIP_SENDER_MAIN, 257);
+        player->ADD_GOSSIP_ITEM(6, "Crispins R√©galiens.", GOSSIP_SENDER_MAIN, 258);
+        player->ADD_GOSSIP_ITEM(6, "Echarpe R√©galienne.", GOSSIP_SENDER_MAIN, 259);
+        player->ADD_GOSSIP_ITEM(6, "Etoile R√©galienne.", GOSSIP_SENDER_MAIN, 260);
         player->ADD_GOSSIP_ITEM(6, "Chapeau de sorcier de Sombrebrume.", GOSSIP_SENDER_MAIN, 261);
         player->ADD_GOSSIP_ITEM(6, "Pantalon de Sombrebrume.", GOSSIP_SENDER_MAIN, 262);
         player->ADD_GOSSIP_ITEM(6, "Mantelet de Sombrebrume.", GOSSIP_SENDER_MAIN, 263);
@@ -185,13 +188,13 @@ l300 :
         player->ADD_GOSSIP_ITEM(6, "Anneau tumultueux.", GOSSIP_SENDER_MAIN, 310);
         player->ADD_GOSSIP_ITEM(6, "Cape tumultueuse.", GOSSIP_SENDER_MAIN, 302);
         player->ADD_GOSSIP_ITEM(6, "Protege-mains denombres.", GOSSIP_SENDER_MAIN, 304);
-        player->ADD_GOSSIP_ITEM(6, "Protege-Èpaules denombres.", GOSSIP_SENDER_MAIN, 308);
+        player->ADD_GOSSIP_ITEM(6, "Protege-√©paules denombres.", GOSSIP_SENDER_MAIN, 308);
         player->ADD_GOSSIP_ITEM(6, "Foulard denombre.", GOSSIP_SENDER_MAIN, 311);
         player->ADD_GOSSIP_ITEM(6, "Garde-mains vigoureux.", GOSSIP_SENDER_MAIN, 303);
-        player->ADD_GOSSIP_ITEM(6, "SpaliËres vigoureuses.", GOSSIP_SENDER_MAIN, 307);
+        player->ADD_GOSSIP_ITEM(6, "Spali√®res vigoureuses.", GOSSIP_SENDER_MAIN, 307);
         player->ADD_GOSSIP_ITEM(6, "Ceinture vigoureuse.", GOSSIP_SENDER_MAIN, 312);
         player->ADD_GOSSIP_ITEM(6, "Manicles liees a la terre.", GOSSIP_SENDER_MAIN, 305);
-        player->ADD_GOSSIP_ITEM(6, "Garde-Èpaules lies a la terre.", GOSSIP_SENDER_MAIN, 309);
+        player->ADD_GOSSIP_ITEM(6, "Garde-√©paules lies a la terre.", GOSSIP_SENDER_MAIN, 309);
         player->ADD_GOSSIP_ITEM(6, "Ceinturon lies a la terre.", GOSSIP_SENDER_MAIN, 313);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
         player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
@@ -244,11 +247,11 @@ l500 :
     case 550:
         retour = action;
         player->ADD_GOSSIP_ITEM(6, "Cuirasse de capitaine.", GOSSIP_SENDER_MAIN, 552);
-        player->ADD_GOSSIP_ITEM(6, "JambiËres de capitaine.", GOSSIP_SENDER_MAIN, 553);
+        player->ADD_GOSSIP_ITEM(6, "Jambi√®res de capitaine.", GOSSIP_SENDER_MAIN, 553);
         player->ADD_GOSSIP_ITEM(6, "Diademe de capitaine.", GOSSIP_SENDER_MAIN, 554);
         player->ADD_GOSSIP_ITEM(6, "Gantelets de capitaine.", GOSSIP_SENDER_MAIN, 555);
         player->ADD_GOSSIP_ITEM(6, "Bottes de capitaine.", GOSSIP_SENDER_MAIN, 556);
-        player->ADD_GOSSIP_ITEM(6, "Garde-Èpaules de capitaine.", GOSSIP_SENDER_MAIN, 557);
+        player->ADD_GOSSIP_ITEM(6, "Garde-√©paules de capitaine.", GOSSIP_SENDER_MAIN, 557);
         player->ADD_GOSSIP_ITEM(6, "Cape de capitaine.", GOSSIP_SENDER_MAIN, 558);
         player->ADD_GOSSIP_ITEM(6, "Brassards de capitaine.", GOSSIP_SENDER_MAIN, 559);
         player->ADD_GOSSIP_ITEM(6, "Sangle de capitaine.", GOSSIP_SENDER_MAIN, 560);
@@ -290,10 +293,10 @@ l600 :
         player->ADD_GOSSIP_ITEM(6, "Bottes de chevaucheur de loup.", GOSSIP_SENDER_MAIN, 603);
         player->ADD_GOSSIP_ITEM(6, "Cape de chevaucheur de loup.", GOSSIP_SENDER_MAIN, 604);
         player->ADD_GOSSIP_ITEM(6, "Gants de chevaucheur de loup.", GOSSIP_SENDER_MAIN, 605);
-        player->ADD_GOSSIP_ITEM(6, "JambiËres de chevaucheur de loup.", GOSSIP_SENDER_MAIN, 606);
-        player->ADD_GOSSIP_ITEM(6, "Protege-Èpaules de chevaucheur...", GOSSIP_SENDER_MAIN, 607);
+        player->ADD_GOSSIP_ITEM(6, "Jambi√®res de chevaucheur de loup.", GOSSIP_SENDER_MAIN, 606);
+        player->ADD_GOSSIP_ITEM(6, "Protege-√©paules de chevaucheur...", GOSSIP_SENDER_MAIN, 607);
         player->ADD_GOSSIP_ITEM(6, "Protege-poignets de chevaucheur...", GOSSIP_SENDER_MAIN, 608);
-        player->ADD_GOSSIP_ITEM(6, "JambiËres de forestier.", GOSSIP_SENDER_MAIN, 609);
+        player->ADD_GOSSIP_ITEM(6, "Jambi√®res de forestier.", GOSSIP_SENDER_MAIN, 609);
         player->ADD_GOSSIP_ITEM(6, "Casque de forestier.", GOSSIP_SENDER_MAIN, 610);
         player->ADD_GOSSIP_ITEM(6, "Bottes de forestier.", GOSSIP_SENDER_MAIN, 611);
         player->ADD_GOSSIP_ITEM(6, "Epaulieres de forestier.", GOSSIP_SENDER_MAIN, 612);
@@ -325,7 +328,7 @@ l600 :
 l700 :
     case 700:
         retour = action;
-        player->ADD_GOSSIP_ITEM(6, "DrapÈ de sorcier.", GOSSIP_SENDER_MAIN, 702);
+        player->ADD_GOSSIP_ITEM(6, "Drap√© de sorcier.", GOSSIP_SENDER_MAIN, 702);
         player->ADD_GOSSIP_ITEM(6, "Sphere de sorcier.", GOSSIP_SENDER_MAIN, 703);
         player->ADD_GOSSIP_ITEM(6, "Robe de sorcier.", GOSSIP_SENDER_MAIN, 704);
         player->ADD_GOSSIP_ITEM(6, "Pantalon de sorcier.", GOSSIP_SENDER_MAIN, 705);
@@ -420,7 +423,7 @@ l950 :
         player->ADD_GOSSIP_ITEM(6, "Cape de veneur.", GOSSIP_SENDER_MAIN, 956);
         player->ADD_GOSSIP_ITEM(6, "Ceinture de veneur.", GOSSIP_SENDER_MAIN, 957);
         player->ADD_GOSSIP_ITEM(6, "Gants de veneur.", GOSSIP_SENDER_MAIN, 958);
-        player->ADD_GOSSIP_ITEM(6, "JambiËres de veneur.", GOSSIP_SENDER_MAIN, 959);
+        player->ADD_GOSSIP_ITEM(6, "Jambi√®res de veneur.", GOSSIP_SENDER_MAIN, 959);
         player->ADD_GOSSIP_ITEM(6, "Epaulieres de veneur.", GOSSIP_SENDER_MAIN, 960);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
         player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
@@ -442,7 +445,7 @@ l950 :
 		case 10041: case 10042: case 10043: case 10044: case 10045: case 10046: case 10047: case 10048: case 10049: case 10050:
 
 			r_i_e = rand_item_ench(item_id);
-			sLog->outErrorDb("r_i_e[0] (aprËs le retour) : %u", r_i_e[0]);
+			sLog->outErrorDb("r_i_e[0] (apr√®s le retour) : %u", r_i_e[0]);
 			AddItemChoix(player, item_id, r_i_e[action-10001]);
 			RandMenu(player, creature, item_id, retour);
 		break;

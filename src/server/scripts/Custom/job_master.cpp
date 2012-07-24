@@ -129,5 +129,5 @@ bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint3
     return true; }
 };
 
-void AddSc_Custom_Job() {
+void AddSc_job_master() {
     new job_master; }
