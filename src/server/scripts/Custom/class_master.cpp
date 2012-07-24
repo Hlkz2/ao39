@@ -23,25 +23,25 @@ bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint3
 		MainMenu(player, creature);
 		player->UpdateSkillsToMaxSkillsForLevel();
 		if (player->HasSpell(17877)) {
-		player->learnSpell(18867, true);
-		player->learnSpell(18868, true); } // brulure de l'ombre
+		player->learnSpell(18867, false);
+		player->learnSpell(18868, false); } // brulure de l'ombre
 		if (player->HasSpell(11366)) {
-		player->learnSpell(12505, true);
-		player->learnSpell(12522, true);
-		player->learnSpell(12523, true); } // explosion pyrotechnique
+		player->learnSpell(12505, false);
+		player->learnSpell(12522, false);
+		player->learnSpell(12523, false); } // explosion pyrotechnique
 		if (player->HasSpell(11113)) {
-		player->learnSpell(13018, true); } // vague explosive
+		player->learnSpell(13018, false); } // vague explosive
 		if (player->HasSpell(5570)) {
-		player->learnSpell(24974, true); } // essaim d'insecte
+		player->learnSpell(24974, false); } // essaim d'insecte
 		if (player->HasSpell(19434)) {
-		player->learnSpell(20900, true);
-		player->learnSpell(20901, true); } // visée
+		player->learnSpell(20900, false);
+		player->learnSpell(20901, false); } // visée
 		if (player->HasSpell(15407)) {
-		player->learnSpell(17311, true);
-		player->learnSpell(17312, true); } // fouet mental
+		player->learnSpell(17311, false);
+		player->learnSpell(17312, false); } // fouet mental
 		if (player->HasSpell(19236)) {
-		player->learnSpell(19240, true);
-		player->learnSpell(19238, true); } // prière du désespoir
+		player->learnSpell(19240, false);
+		player->learnSpell(19238, false); } // prière du désespoir
 		creature->CastSpell(player,38588,false);
 		break;
 
