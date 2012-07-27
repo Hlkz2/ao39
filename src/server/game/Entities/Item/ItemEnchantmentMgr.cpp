@@ -226,8 +226,7 @@ uint32 rand_item_suffix(Player *player, int32 item_id) {
         if (count <= 7) {
         const ItemRandomPropertiesEntry* random_id = sItemRandomPropertiesStore.LookupEntry(ench_iter->ench);
 		testnm = random_id->nameSuffix[2];
-		sLog->outErrorDb("%u 4 : %s", count, random_id->nameSuffix[2]);
-		sLog->outErrorDb("%u stwing : %s", count, testnm); } 
+		sLog->outErrorDb("%u 4 : %s", count, random_id->nameSuffix[2]); 
 	  count++; }
 	rand_item_suffix = count;
 	return rand_item_suffix; }
