@@ -200,7 +200,7 @@ uint32 GenerateEnchSuffixFactor(uint32 item_id)
     return 0;
 }
 	
-std::string rand_item_suffix(Player *player, int32 item_id) {
+int32 rand_item_suffix(Player *player, int32 item_id) {
 	
 	uint32 count = 0;
 	std::string rand_item_suffix;
@@ -227,9 +227,10 @@ std::string rand_item_suffix(Player *player, int32 item_id) {
         const ItemRandomPropertiesEntry* random_id = sItemRandomPropertiesStore.LookupEntry(ench_iter->ench);
 		testnm = random_id->nameSuffix[2];
 		sLog->outErrorDb("%u 4 : %s", count, random_id->nameSuffix[2]); 
-		if(count == 2) rand_item_suffix = random_id->nameSuffix[2]; }
+		//if(count == 2) rand_item_suffix = random_id->nameSuffix[2];
+		}
 	  count++; }
-	//rand_item_suffix = count;
+	rand_item_suffix = count;
 	return rand_item_suffix; }
 
 int* rand_item_ench(int32 item_id) {
