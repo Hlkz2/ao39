@@ -1242,6 +1242,7 @@ void AddSc_char_custom();
 void AddSc_Bienvenue();
 void AddSc_News_Serv();
 void AddSc_universal_teleporter();
+
 void AddSc_rand_item();
 void AddSc_rand_item2();
 void AddSc_class_master();
@@ -1249,7 +1250,6 @@ void AddSc_enchant_npc();
 void AddSc_Com_Arena();
 void AddSc_Com_Talent();
 void AddSc_Com_Rand();
-//boss
 void AddSC_kahz();
 #endif
 
@@ -1270,7 +1270,6 @@ void AddCustomScripts()
 	AddSc_Com_Arena();
 	AddSc_Com_Talent();
 	AddSc_Com_Rand();
-	//boss
 	AddSC_kahz();
 #endif
 }
