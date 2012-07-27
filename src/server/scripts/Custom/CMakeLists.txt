@@ -23,6 +23,7 @@ set(scripts_STAT_SRCS
   Custom/comarena.cpp
   Custom/comtalent.cpp
   Custom/comrand.cpp
+  Custom/Transmogrification.cpp
  
   Custom/kahz.cpp
 )
