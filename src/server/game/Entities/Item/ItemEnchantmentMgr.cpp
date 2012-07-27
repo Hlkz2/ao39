@@ -200,7 +200,7 @@ uint32 GenerateEnchSuffixFactor(uint32 item_id)
     return 0;
 }
 	
-int32 rand_item_suffix(Player *player, int32 item_id) {
+uint32 rand_item_suffix(Player *player, int32 item_id) {
 	
 	uint32 count = 0;
 	uint32 rand_item_suffix;
