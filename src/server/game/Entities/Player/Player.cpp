@@ -5642,7 +5642,7 @@ void Player::RepopAtGraveyard()
 				CastSpell(this,13874,false); //bubul
 			}
 
-			if (GetMapId() == 585 || GetMapId() == 230 || GetZoneId() == 2079 || GetZoneId() == 3357)
+			if (GetMapId() == 585 || GetMapId() == 230 || GetZoneId() == 2079 || GetAreaId() == 3357)
 			{
 				CastSpell(this,29921,false); // invisibilité
 			}

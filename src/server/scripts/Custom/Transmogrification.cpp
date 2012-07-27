@@ -139,7 +139,7 @@ bool OnGossipHello(Player* player, Creature* creature) {
                             player->ModifyMoney(-1*GetFakePrice(oldItem)); // take cost
 #endif
                             oldItem->SetFakeEntry(newItem->GetEntry());
-							player->AddItem(newItem->GetTemplate()->ItemId, -1);
+							player->DestroyItemCount(newItem->GetTemplate()->ItemId, 1, true, false);
                             player->PlayDirectSound(3337);
                             session->SendAreaTriggerMessage(session->GetTrinityString(LANG_ITEM_TRANSMOGRIFIED), GetSlotName(sender, session));
                         }
@@ -189,7 +189,8 @@ std::string GetItemName(Item* item, WorldSession* session) {
         if (sellPrice < minPrice)
             sellPrice = minPrice;
         return sellPrice; }
-#endif };
+#endif
+};
 
 void AddSC_NPC_Transmogrify() {
     new NPC_Transmogrify(); }

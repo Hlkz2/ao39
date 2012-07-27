@@ -199,13 +199,14 @@ uint32 GenerateEnchSuffixFactor(uint32 item_id)
     }
     return 0;
 }
-
+	
 uint32 rand_item_suffix(Player *player, int32 item_id) {
 	
 	uint32 count = 0;
-	char* name_char;
 	uint32 rand_item_suffix;
-	
+	std::string testnm;
+	std::ostringstream testhm;
+
     int loc_idx = player->GetSession()->GetSessionDbLocaleIndex();
     int locdbc_idx = player->GetSession()->GetSessionDbcLocale();
 	
@@ -222,33 +223,19 @@ uint32 rand_item_suffix(Player *player, int32 item_id) {
 
 	EnchStoreList::const_iterator ench_iter = tab->second.begin();
 	for (EnchStoreList::const_iterator ench_iter = tab->second.begin(); ench_iter != tab->second.end(); ++ench_iter) {
-/*      if (count <= 7) {
+        if (count <= 7) {
         const ItemRandomPropertiesEntry* random_id = sItemRandomPropertiesStore.LookupEntry(ench_iter->ench);
-		
-		name_char = random_id->nameSuffix[locdbc_idx >= 0 ? locdbc_idx : LOCALE_enUS];
-		rand_item_suffix[count] = name_char[2];
-
-		sLog->outErrorDb("%u : %u - %u - %u - %u - %u - %u | %u", count,
-			name_char[0],
-			name_char[1],
-			name_char[2],
-			name_char[3],
-			name_char[4],
-			name_char[5],
-			rand_item_suffix[count]); } */
+		testnm = random_id->nameSuffix[2];
+		sLog->outErrorDb("%u 4 : %s", count, random_id->nameSuffix[2]);
+		sLog->outErrorDb("%u stwing : %s", count, testnm); } 
 	  count++; }
 	rand_item_suffix = count;
-//	sLog->outErrorDb("r_i_s[0] (avant le retour) : %u", rand_item_suffix);
-//	sLog->outErrorDb("r_i_s[78] (avant le retour) : %u", rand_item_suffix[78]);
-//	sLog->outErrorDb("r_i_s[99] (avant le retour) : %u", rand_item_suffix[99]);
-//	sLog->outErrorDb("Count final (r_i_s) : %u", count);
 	return rand_item_suffix; }
 
 int* rand_item_ench(int32 item_id) {
 	
 	uint32 count = 0;
 	int rand_item_ench[100];
-
     ItemTemplate const* itemProto = sObjectMgr->GetItemTemplate(item_id);
     uint32 irandprop = itemProto->RandomProperty; // on récupère le Random Proprety
     if ((!irandprop) || (irandprop == -1)) {
