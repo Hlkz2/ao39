@@ -5630,8 +5630,7 @@ void Player::RepopAtGraveyard()
             GetSession()->SendPacket(&data);
 			
 			// rez/effets à la mort selon la map
-
-			if (GetZoneId() != 2266 || GetMapId() == 489 || GetMapId() == 529)
+			if (GetZoneId() != 4080 && GetZoneId() != 2266 && GetMapId() != 489 && GetMapId() != 529)
 			{
 				ResurrectPlayer(1);
 				SpawnCorpseBones();
@@ -23314,6 +23313,7 @@ void Player::UpdateCorpseReclaimDelay()
     }
     else
         m_deathExpireTime = now+DEATH_EXPIRE_STEP;
+	if ((GetZoneId() == 2266) || (GetZoneId() == 4080)) m_deathExpireTime = now;
 }
 
 void Player::SendCorpseReclaimDelay(bool load)
