@@ -220,7 +220,7 @@ bool MapManager::CanPlayerEnter(uint32 mapid, Player* player, bool loginCheck)
                 return false;
             }
             sLog->outDebug(LOG_FILTER_MAPS, "MAP: Player '%s' has corpse in instance '%s' and can enter.", player->GetName(), mapName);
-            player->ResurrectPlayer(0.5f, false);
+            player->ResurrectPlayer(1, false);
             player->SpawnCorpseBones();
         }
         else

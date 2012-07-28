@@ -95,12 +95,11 @@ bool OnGossipHello(Player* player, Creature* creature) {
                     player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, session->GetTrinityString(LANG_OPTION_BACK), EQUIPMENT_SLOT_END+1, 0);
                     player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
                 }
-                else OnGossipHello(player, creature);
+				else OnGossipHello(player, creature);
             } break;
-        case EQUIPMENT_SLOT_END+1: // Back
-            {
-                OnGossipHello(player, creature);
-            } break;
+
+        case EQUIPMENT_SLOT_END+1: OnGossipHello(player, creature); break;
+
         case EQUIPMENT_SLOT_END+2: // Remove Transmogrifications
             {
                 bool removed = false;
@@ -114,17 +113,19 @@ bool OnGossipHello(Player* player, Creature* creature) {
                 else session->SendNotification(session->GetTrinityString(LANG_ERR_NO_TRANSMOGRIFICATIONS));
                 OnGossipHello(player, creature);
             } break;
+
         case EQUIPMENT_SLOT_END+3: // Remove Transmogrification from single item
             {
                 if (Item* newItem = player->GetItemByPos(INVENTORY_SLOT_BAG_0, uiAction))
                 {
                     if (newItem->DeleteFakeEntry()) {
-                        session->SendAreaTriggerMessage(session->GetTrinityString(LANG_REM_TRANSMOGRIFICATION_ITEM), GetSlotName(uiAction, session));
+                        session->SendAreaTriggerMessage(session->GetTrinityString(LANG_REM_TRANSMOGRIFICATION_ITEM));
                         player->PlayDirectSound(3337); }
                     else session->SendNotification(session->GetTrinityString(LANG_ERR_NO_TRANSMOGRIFICATION), GetSlotName(uiAction, session));
                 }
                 OnGossipSelect(player, creature, EQUIPMENT_SLOT_END, uiAction);
             } break;
+
         default: // Transmogrify
             {
                 uint32 lowGUID = player->GetGUIDLow();
@@ -135,13 +136,10 @@ bool OnGossipHello(Player* player, Creature* creature) {
                         Item* newItem = _items[lowGUID][uiAction];
                         if (newItem->GetOwnerGUID() == player->GetGUIDLow() && (newItem->IsInBag() || newItem->GetBagSlot() == INVENTORY_SLOT_BAG_0) && player->SuitableForTransmogrification(oldItem, newItem) == ERR_FAKE_OK)
                         {
-#if (GOLD_COST)
-                            player->ModifyMoney(-1*GetFakePrice(oldItem)); // take cost
-#endif
                             oldItem->SetFakeEntry(newItem->GetEntry());
 							player->DestroyItemCount(newItem->GetTemplate()->ItemId, 1, true, false);
                             player->PlayDirectSound(3337);
-                            session->SendAreaTriggerMessage(session->GetTrinityString(LANG_ITEM_TRANSMOGRIFIED), GetSlotName(sender, session));
+                            session->SendAreaTriggerMessage(session->GetTrinityString(LANG_ITEM_TRANSMOGRIFIED));
                         }
                         else session->SendNotification(session->GetTrinityString(LANG_ERR_NO_ITEM_SUITABLE)); }
                     else session->SendNotification(session->GetTrinityString(LANG_ERR_NO_ITEM_EXISTS)); }
@@ -182,14 +180,6 @@ std::string GetItemName(Item* item, WorldSession* session) {
 		    ObjectMgr::GetLocaleString(il->Name, loc_idx, name);
 	return name; }
 
-#if (GOLD_COST)
-    uint32 GetFakePrice(Item* item) {
-        uint32 sellPrice = item->GetTemplate()->SellPrice;
-        uint32 minPrice = item->GetTemplate()->RequiredLevel * 1176;
-        if (sellPrice < minPrice)
-            sellPrice = minPrice;
-        return sellPrice; }
-#endif
 };
 
 void AddSC_NPC_Transmogrify() {

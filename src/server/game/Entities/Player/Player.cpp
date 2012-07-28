@@ -5599,7 +5599,7 @@ void Player::RepopAtGraveyard()
     // Such zones are considered unreachable as a ghost and the player must be automatically revived
     if ((!isAlive() && zone && zone->flags & AREA_FLAG_NEED_FLY) || GetTransport() || GetPositionZ() < -500.0f)
     {
-        ResurrectPlayer(0.5f);
+        ResurrectPlayer(1);
         SpawnCorpseBones();
     }
 
@@ -5628,9 +5628,9 @@ void Player::RepopAtGraveyard()
             data << ClosestGrave->y;
             data << ClosestGrave->z;
             GetSession()->SendPacket(&data);
-			
+
 			// rez/effets à la mort selon la map
-			if (GetZoneId() != 4080 && GetZoneId() != 2266 && GetMapId() != 489 && GetMapId() != 529)
+			if (GetZoneId() != 4080 && GetZoneId() != 2266 && GetMapId() != 489 && GetMapId() != 529 && !InBattleground())
 			{
 				ResurrectPlayer(1);
 				SpawnCorpseBones();
@@ -17629,7 +17629,7 @@ void Player::LoadCorpse()
             ApplyModFlag(PLAYER_FIELD_BYTES, PLAYER_FIELD_BYTE_RELEASE_TIMER, corpse && !sMapStore.LookupEntry(corpse->GetMapId())->Instanceable());
         else
             //Prevent Dead Player login without corpse
-            ResurrectPlayer(0.5f);
+            ResurrectPlayer(1);
     }
 }
 
@@ -23313,7 +23313,13 @@ void Player::UpdateCorpseReclaimDelay()
     }
     else
         m_deathExpireTime = now+DEATH_EXPIRE_STEP;
-	if ((GetZoneId() == 2266) || (GetZoneId() == 4080)) m_deathExpireTime = now;
+
+	
+	if ((GetZoneId() == 2266) || (GetZoneId() == 4080))
+	{
+		sLog->outErrorDb("WE GOT IT");
+		m_deathExpireTime = now;
+	}
 }
 
 void Player::SendCorpseReclaimDelay(bool load)
@@ -25689,8 +25695,7 @@ uint32 Player::SuitableForTransmogrification(Item* oldItem, Item* newItem) // cu
         if (const ItemTemplate* fakeItemTemplate = sObjectMgr->GetItemTemplate(oldItem->GetFakeEntry()))
             if (fakeItemTemplate->DisplayInfoID == newItem->GetTemplate()->DisplayInfoID)
                 return ERR_FAKE_SAME_DISPLAY_FAKE;
-    if (CanUseItem(newItem, false) != EQUIP_ERR_OK)
-        return ERR_FAKE_CANT_USE;
+//    if (CanUseItem(newItem, false) != EQUIP_ERR_OK) return ERR_FAKE_CANT_USE;
     uint32 newClass = newItem->GetTemplate()->Class;
     uint32 oldClass = oldItem->GetTemplate()->Class;
     uint32 newSubClass = newItem->GetTemplate()->SubClass;
@@ -25710,12 +25715,22 @@ uint32 Player::SuitableForTransmogrification(Item* oldItem, Item* newItem) // cu
             return ERR_FAKE_BAD_SUBLCASS;
     }
     else if (newClass == ITEM_CLASS_ARMOR)
-        if (newSubClass == oldSubClass)
-            if (newInventorytype == oldInventorytype || (newInventorytype == INVTYPE_CHEST && oldInventorytype == INVTYPE_ROBE) || (newInventorytype == INVTYPE_ROBE && oldInventorytype == INVTYPE_CHEST))
+//		if (newSubClass == oldSubClass) {
+
+	    if (newSubClass >= 2) {
+			if (getClass() == CLASS_MAGE || getClass() == CLASS_WARLOCK || getClass() == CLASS_PRIEST)
+				return ERR_FAKE_BAD_INVENTORYTYPE;
+
+			if (newSubClass >= 3) {
+				if (getClass() == CLASS_DRUID || getClass() == CLASS_ROGUE)
+					return ERR_FAKE_BAD_INVENTORYTYPE;
+
+				if (newSubClass >= 4) {
+					if (getClass() == CLASS_HUNTER || getClass() == CLASS_SHAMAN)
+						return ERR_FAKE_BAD_INVENTORYTYPE;
+				} } }
+
+		if (newInventorytype == oldInventorytype || (newInventorytype == INVTYPE_CHEST && oldInventorytype == INVTYPE_ROBE) || (newInventorytype == INVTYPE_ROBE && oldInventorytype == INVTYPE_CHEST))
                 return ERR_FAKE_OK;
-            else
-                return ERR_FAKE_BAD_INVENTORYTYPE;
-        else
-            return ERR_FAKE_BAD_SUBLCASS;
-    return ERR_FAKE_BAD_CLASS;
-}
+            else return ERR_FAKE_BAD_INVENTORYTYPE;
+	return ERR_FAKE_BAD_CLASS; }

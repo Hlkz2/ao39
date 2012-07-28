@@ -759,7 +759,8 @@ void WorldSession::HandleReclaimCorpseOpcode(WorldPacket &recv_data)
         return;
 
     // resurrect
-    GetPlayer()->ResurrectPlayer(GetPlayer()->InBattleground() ? 1.0f : 0.5f);
+ // GetPlayer()->ResurrectPlayer(GetPlayer()->InBattleground() ? 1.0f : 0.5f);
+    GetPlayer()->ResurrectPlayer(1.0f); // custom
 
     // spawn bones
     GetPlayer()->SpawnCorpseBones();
