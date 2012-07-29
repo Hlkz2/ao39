@@ -29,16 +29,16 @@ EndScriptData */
 #include "ScriptPCH.h"
 #include "uldaman.h"
 
-#define SAY_AGGRO           "Who dares awaken Archaedas? Who dares the wrath of the makers!"
+#define SAY_AGGRO           "Qui ose éveiller Archaedas ? Qui ose courroucer les faiseurs !"
 #define SOUND_AGGRO         5855
 
-#define SAY_SUMMON          "Awake ye servants, defend the discs!"
+#define SAY_SUMMON          "Debout, serviteurs, défendez le disque !"
 #define SOUND_SUMMON        5856
 
-#define SAY_SUMMON2         "To my side, brothers. For the makers!"
+#define SAY_SUMMON2         "À moi, mes frères. Pour les faiseurs !"
 #define SOUND_SUMMON2       5857
 
-#define SAY_KILL            "Reckless mortal."
+#define SAY_KILL            "Stupides mortels."
 #define SOUND_KILL          5858
 
 enum eSpells
@@ -219,8 +219,6 @@ SDComment: These mobs are initially frozen until Archaedas awakens them
 one at a time.
 EndScriptData */
 
-#define SPELL_ARCHAEDAS_AWAKEN  10347
-
 class mob_archaedas_minions : public CreatureScript
 {
     public:
@@ -383,8 +381,6 @@ SDComment: Needs 1 person to activate the Archaedas script
 SDCategory: Uldaman
 EndScriptData */
 
-#define SPELL_BOSS_OBJECT_VISUAL    11206
-
 class go_altar_of_archaedas : public GameObjectScript
 {
     public:
@@ -413,8 +409,6 @@ SD%Complete: 100
 SDComment: Need 1 person to activate to open the altar.  One by one the StoneKeepers will activate.  After all four are dead than the door will open.
 SDCategory: Uldaman
 EndScriptData */
-
-#define SPELL_BOSS_OBJECT_VISUAL    11206
 
 class go_altar_of_the_keepers : public GameObjectScript
 {

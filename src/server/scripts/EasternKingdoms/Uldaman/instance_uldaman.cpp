@@ -181,6 +181,7 @@ class instance_uldaman : public InstanceMapScript
                     target->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
                     target->setFaction(14);
                     target->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+					target->RemoveAllAuras();
                     return;        // only want the first one we find
                 }
                 // if we get this far than all four are dead so open the door

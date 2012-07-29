@@ -1823,6 +1823,43 @@ void LFGMgr::TeleportPlayer(Player* player, bool out, bool fromOpcode /*= false*
                     y = at->target_Y;
                     z = at->target_Z;
                     orientation = at->target_Orientation;
+					switch(dungeon->ID) {
+						case 14: // Gnomeregan
+							mapid = 90;
+							x = -332.22f;
+							y = -2.28f;
+							z = -150.86f;
+							orientation = 2.77f;
+							break;
+						case 163: // Scarlet Monastery - Armory
+							mapid = 189;
+							x = 1610.83f;
+							y = -323.433f;
+							z = 18.6738f;
+							orientation = 6.28022f;
+							break;
+						case 164: // Scarlet Monastery - Cathedral
+							mapid = 189;
+							x = 855.683f;
+							y = 1321.5f;
+							z = 18.6709f;
+							orientation = 0.001747f;
+							break;
+						case 165: // Scarlet Monastery - Library
+							mapid = 189;
+							x = 255.346f;
+							y = -209.09f;
+							z = 18.6773f;
+							orientation = 6.26656f;
+							break;
+						case 272: // Maraudon - Cristaux violets
+							mapid = 349;
+							x = 752.91f;
+							y = -616.53f;
+							z = -33.11f;
+							orientation = 1.4f;
+							break; }
+
                 }
             }
 

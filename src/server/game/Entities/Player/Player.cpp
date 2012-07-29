@@ -5630,7 +5630,7 @@ void Player::RepopAtGraveyard()
             GetSession()->SendPacket(&data);
 
 			// rez/effets à la mort selon la map
-			if (GetZoneId() != 4080 && GetZoneId() != 2266 && GetMapId() != 489 && GetMapId() != 529 && !InBattleground())
+			if (GetZoneId() != 4080 && GetZoneId() != 2266 && !InBattleground())
 			{
 				ResurrectPlayer(1);
 				SpawnCorpseBones();
@@ -7341,27 +7341,9 @@ bool Player::RewardHonor(Unit* uVictim, uint32 groupsize, int32 honor, bool pvpt
         }
     }
 
-    if (sWorld->getBoolConfig(CONFIG_PVP_TOKEN_ENABLE) && pvptoken)
-    {
-        if (!uVictim || uVictim == this || uVictim->HasAuraType(SPELL_AURA_NO_PVP_CREDIT))
-            return true;
-
-        if (uVictim->GetTypeId() == TYPEID_PLAYER)
-        {
-            // Check if allowed to receive it in current map
-            uint8 MapType = sWorld->getIntConfig(CONFIG_PVP_TOKEN_MAP_TYPE);
-            if ((MapType == 1 && !InBattleground() && !HasByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_FFA_PVP))
-                || (MapType == 2 && !HasByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_FFA_PVP))
-                || (MapType == 3 && !InBattleground()))
-                return true;
-
-            uint32 itemId = sWorld->getIntConfig(CONFIG_PVP_TOKEN_ID);
-            int32 count = sWorld->getIntConfig(CONFIG_PVP_TOKEN_COUNT);
-
-            if (AddItem(itemId, count))
-                ChatHandler(this).PSendSysMessage("You have been awarded a token for slaying another player.");
-        }
-    }
+	if (!InBattleground() && !HasByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_FFA_PVP)) {
+        if (uVictim->GetTypeId() == TYPEID_PLAYER) {
+			AddItem(7725, 1); } }
 
     return true;
 }
@@ -23314,12 +23296,7 @@ void Player::UpdateCorpseReclaimDelay()
     else
         m_deathExpireTime = now+DEATH_EXPIRE_STEP;
 
-	
-	if ((GetZoneId() == 2266) || (GetZoneId() == 4080))
-	{
-		sLog->outErrorDb("WE GOT IT");
-		m_deathExpireTime = now;
-	}
+	if ((GetZoneId() == 2266) || (GetZoneId() == 4080)) m_deathExpireTime = now;
 }
 
 void Player::SendCorpseReclaimDelay(bool load)

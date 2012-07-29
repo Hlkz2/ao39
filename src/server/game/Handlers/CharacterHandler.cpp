@@ -1906,21 +1906,21 @@ void WorldSession::HandleCharFactionOrRaceChange(WorldPacket& recv_data)
         stmt->setUInt32(0, lowGuid);
         if (team == BG_TEAM_ALLIANCE)
         {
-            stmt->setUInt16(1, 0);
-            stmt->setUInt16(2, 1519);
-            stmt->setFloat (3, -8867.68f);
-            stmt->setFloat (4, 673.373f);
-            stmt->setFloat (5, 97.9034f);
-            Player::SavePositionInDB(0, -8867.68f, 673.373f, 97.9034f, 0.0f, 1519, lowGuid);
+            stmt->setUInt16(1, 532);
+            stmt->setUInt16(2, 3457);
+            stmt->setFloat (3, -10868.8f);
+            stmt->setFloat (4, -2089.08f);
+            stmt->setFloat (5, 90.5f);
+            Player::SavePositionInDB(532, -10868.8f, -2089.08f, 90.5f, 0.0f, 3457, lowGuid);
         }
         else
         {
-            stmt->setUInt16(1, 1);
-            stmt->setUInt16(2, 1637);
-            stmt->setFloat (3, 1633.33f);
-            stmt->setFloat (4, -4439.11f);
-            stmt->setFloat (5, 15.7588f);
-            Player::SavePositionInDB(1, 1633.33f, -4439.11f, 15.7588f, 0.0f, 1637, lowGuid);
+            stmt->setUInt16(1, 532);
+            stmt->setUInt16(2, 3457);
+            stmt->setFloat (3, -11211.3f);
+            stmt->setFloat (4, -1682.63f);
+            stmt->setFloat (5, 179.3f);
+            Player::SavePositionInDB(532, -11211.3f, -1682.63f, 179.3f, 0.0f, 3457, lowGuid);
         }
         trans->Append(stmt);
 
