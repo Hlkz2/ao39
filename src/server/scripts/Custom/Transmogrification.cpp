@@ -54,7 +54,7 @@ bool OnGossipHello(Player* player, Creature* creature) {
                         if (limit > 30) break;
                         if (Item* newItem = player->GetItemByPos(INVENTORY_SLOT_BAG_0, i))
                         {
-							if((newItem->GetTemplate()->ItemLevel == 60) && (newItem->GetTemplate()->RequiredLevel == 39))
+							if((newItem->GetTemplate()->ItemLevel == 60) && (newItem->GetTemplate()->RequiredLevel == 40))
 							{
 								uint32 display = newItem->GetTemplate()->DisplayInfoID;
 								if (player->SuitableForTransmogrification(oldItem, newItem) == ERR_FAKE_OK) {
