@@ -32,19 +32,12 @@ enum eSpells
     SPELL_AWAKEN_VAULT_WALKER   = 10258,
 };
 
-class instance_uldaman : public InstanceMapScript
-{
+class instance_uldaman : public InstanceMapScript {
     public:
-        instance_uldaman()
-            : InstanceMapScript("instance_uldaman", 70)
-        {
-        }
+        instance_uldaman() : InstanceMapScript("instance_uldaman", 70) {}
 
-        struct instance_uldaman_InstanceMapScript : public InstanceScript
-        {
-            instance_uldaman_InstanceMapScript(Map* map) : InstanceScript(map)
-            {
-            }
+        struct instance_uldaman_InstanceMapScript : public InstanceScript {
+            instance_uldaman_InstanceMapScript(Map* map) : InstanceScript(map) {}
 
             void Initialize()
             {
@@ -148,6 +141,7 @@ class instance_uldaman : public InstanceMapScript
             {
                 creature->setFaction(35);
                 creature->RemoveAllAuras();
+				//creature->GetMotionMaster()->MoveTargetedHome();
                 //creature->RemoveFlag (UNIT_FIELD_FLAGS, UNIT_FLAG_ANIMATION_FROZEN);
                 creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
@@ -178,6 +172,7 @@ class instance_uldaman : public InstanceMapScript
                     Creature* target = instance->GetCreature(*i);
                     if (!target || !target->isAlive() || target->getFaction() == 14)
                         continue;
+
                     target->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
                     target->setFaction(14);
                     target->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
@@ -202,6 +197,10 @@ class instance_uldaman : public InstanceMapScript
                         continue;
                     archaedas->CastSpell(target, SPELL_AWAKEN_VAULT_WALKER, true);
                     target->CastSpell(target, SPELL_ARCHAEDAS_AWAKEN, true);
+					target->RemoveAllAuras();
+					target->setFaction(14);
+					Unit* target_minion = target->SelectNearestPlayer();
+					if (target_minion) target->CombatStart(target_minion);
                     return;        // only want the first one we find
                 }
             }

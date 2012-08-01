@@ -25658,16 +25658,19 @@ void Player::SendMovementSetFeatherFall(bool apply)
 }
 
 
-uint32 Player::SuitableForTransmogrification(Item* oldItem, Item* newItem) // custom transmo
-{
+uint32 Player::SuitableForTransmogrification(Item* oldItem, Item* newItem) { // custom transmo
+	
+	sLog->outErrorDb("test0 : %u %u", oldItem->GetTemplate()->ItemId, newItem->GetTemplate()->ItemId);
     // not possibly the best structure here, but atleast I got my head around this
     if (!newItem->HasGoodFakeQuality())
         return ERR_FAKE_NEW_BAD_QUALITY;
+	sLog->outErrorDb("test1");
     if (!oldItem->HasGoodFakeQuality())
         return ERR_FAKE_OLD_BAD_QUALITY;
-
+	sLog->outErrorDb("test2");
     if (oldItem->GetTemplate()->DisplayInfoID == newItem->GetTemplate()->DisplayInfoID)
         return ERR_FAKE_SAME_DISPLAY;
+	sLog->outErrorDb("test3");
     if (oldItem->GetFakeEntry())
         if (const ItemTemplate* fakeItemTemplate = sObjectMgr->GetItemTemplate(oldItem->GetFakeEntry()))
             if (fakeItemTemplate->DisplayInfoID == newItem->GetTemplate()->DisplayInfoID)
@@ -25679,35 +25682,30 @@ uint32 Player::SuitableForTransmogrification(Item* oldItem, Item* newItem) // cu
     uint32 oldSubClass = oldItem->GetTemplate()->SubClass;
     uint32 newInventorytype = newItem->GetTemplate()->InventoryType;
     uint32 oldInventorytype = oldItem->GetTemplate()->InventoryType;
+	sLog->outErrorDb("test4 %u %u", oldClass, newClass);
     if (newClass != oldClass)
         return ERR_FAKE_NOT_SAME_CLASS;
-    if (newClass == ITEM_CLASS_WEAPON && newSubClass != ITEM_SUBCLASS_WEAPON_FISHING_POLE && oldSubClass != ITEM_SUBCLASS_WEAPON_FISHING_POLE)
-    {
+	sLog->outErrorDb("test5");
+    if (newClass == ITEM_CLASS_WEAPON && newSubClass != ITEM_SUBCLASS_WEAPON_FISHING_POLE && oldSubClass != ITEM_SUBCLASS_WEAPON_FISHING_POLE) {
         if (newSubClass == oldSubClass || ((newSubClass == ITEM_SUBCLASS_WEAPON_BOW || newSubClass == ITEM_SUBCLASS_WEAPON_GUN || newSubClass == ITEM_SUBCLASS_WEAPON_CROSSBOW) && (oldSubClass == ITEM_SUBCLASS_WEAPON_BOW || oldSubClass == ITEM_SUBCLASS_WEAPON_GUN || oldSubClass == ITEM_SUBCLASS_WEAPON_CROSSBOW)))
             if (newInventorytype == oldInventorytype || (newInventorytype == INVTYPE_WEAPON && (oldInventorytype == INVTYPE_WEAPONMAINHAND || oldInventorytype == INVTYPE_WEAPONOFFHAND)))
                 return ERR_FAKE_OK;
-            else
-                return ERR_FAKE_BAD_INVENTORYTYPE;
-        else
-            return ERR_FAKE_BAD_SUBLCASS;
-    }
-    else if (newClass == ITEM_CLASS_ARMOR)
+            else return ERR_FAKE_BAD_INVENTORYTYPE;
+        else return ERR_FAKE_BAD_SUBLCASS; }
+    else if (newClass == ITEM_CLASS_ARMOR) {
 //		if (newSubClass == oldSubClass) {
-
 	    if (newSubClass >= 2) {
 			if (getClass() == CLASS_MAGE || getClass() == CLASS_WARLOCK || getClass() == CLASS_PRIEST)
-				return ERR_FAKE_BAD_INVENTORYTYPE;
-
+				return ERR_FAKE_BAD_CLASS;
 			if (newSubClass >= 3) {
 				if (getClass() == CLASS_DRUID || getClass() == CLASS_ROGUE)
-					return ERR_FAKE_BAD_INVENTORYTYPE;
-
+					return ERR_FAKE_BAD_CLASS;
 				if (newSubClass >= 4) {
 					if (getClass() == CLASS_HUNTER || getClass() == CLASS_SHAMAN)
-						return ERR_FAKE_BAD_INVENTORYTYPE;
-				} } }
+						return ERR_FAKE_BAD_CLASS;
+				} } } }
 
-		if (newInventorytype == oldInventorytype || (newInventorytype == INVTYPE_CHEST && oldInventorytype == INVTYPE_ROBE) || (newInventorytype == INVTYPE_ROBE && oldInventorytype == INVTYPE_CHEST))
-                return ERR_FAKE_OK;
-            else return ERR_FAKE_BAD_INVENTORYTYPE;
-	return ERR_FAKE_BAD_CLASS; }
+	if (newInventorytype == oldInventorytype || (newInventorytype == INVTYPE_CHEST && oldInventorytype == INVTYPE_ROBE) || (newInventorytype == INVTYPE_ROBE && oldInventorytype == INVTYPE_CHEST))
+		return ERR_FAKE_OK;
+	sLog->outErrorDb("wtf ? hm.. new ? %u .. okay old ? %u .. fuuu x)", newInventorytype, oldInventorytype);
+	return ERR_FAKE_BAD_INVENTORYTYPE; }

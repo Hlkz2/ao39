@@ -29,13 +29,13 @@ EndScriptData */
 #include "ScriptPCH.h"
 #include "uldaman.h"
 
-#define SAY_AGGRO           "Qui ose éveiller Archaedas ? Qui ose courroucer les faiseurs !"
+#define SAY_AGGRO           "Qui ose Ã©iller Archaedas ? Qui ose courroucer les faiseurs !"
 #define SOUND_AGGRO         5855
 
-#define SAY_SUMMON          "Debout, serviteurs, défendez le disque !"
+#define SAY_SUMMON          "Debout, serviteurs, dÃ©fendez le disque !"
 #define SOUND_SUMMON        5856
 
-#define SAY_SUMMON2         "À moi, mes frères. Pour les faiseurs !"
+#define SAY_SUMMON2         "Ã€ moi, mes frÃ¨s. Pour les faiseurs !"
 #define SOUND_SUMMON2       5857
 
 #define SAY_KILL            "Stupides mortels."
@@ -52,21 +52,12 @@ enum eSpells
     SPELL_AWAKEN_EARTHEN_GUARDIAN    = 10252,
 };
 
-class boss_archaedas : public CreatureScript
-{
-    public:
+class boss_archaedas : public CreatureScript {
+    public: boss_archaedas() : CreatureScript("boss_archaedas") {}
 
-        boss_archaedas()
-            : CreatureScript("boss_archaedas")
-        {
-        }
-
-        struct boss_archaedasAI : public ScriptedAI
-        {
-            boss_archaedasAI(Creature* creature) : ScriptedAI(creature)
-            {
-                instance = me->GetInstanceScript();
-            }
+        struct boss_archaedasAI : public ScriptedAI {
+            boss_archaedasAI(Creature* creature) : ScriptedAI(creature) {
+                instance = me->GetInstanceScript(); }
 
             uint32 uiTremorTimer;
             int32  iAwakenTimer;
@@ -77,8 +68,7 @@ class boss_archaedas : public CreatureScript
             bool bVaultWalkersAwake;
             InstanceScript* instance;
 
-            void Reset()
-            {
+            void Reset() {
                 uiTremorTimer = 60000;
                 iAwakenTimer = 0;
                 uiWallMinionTimer = 10000;
@@ -89,9 +79,12 @@ class boss_archaedas : public CreatureScript
 
                 if (instance)
                     instance->SetData(0, 5);    // respawn any dead minions
+				
+                me->GetMotionMaster()->MoveTargetedHome();
                 me->setFaction(35);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
+				me->RemoveAllAuras();
             }
 
             void ActivateMinion(uint64 uiGuid, bool bFlag)
@@ -101,6 +94,10 @@ class boss_archaedas : public CreatureScript
                 if (pMinion && pMinion->isAlive())
                 {
                     DoCast(pMinion, SPELL_AWAKEN_VAULT_WALKER, bFlag);
+					pMinion->RemoveAllAuras();
+					pMinion->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+					pMinion->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
+					pMinion->setFaction(14);
                     pMinion->CastSpell(pMinion, SPELL_ARCHAEDAS_AWAKEN, true);
                 }
             }
@@ -206,10 +203,8 @@ class boss_archaedas : public CreatureScript
             }
         };
 
-        CreatureAI* GetAI(Creature* creature) const
-        {
-            return new boss_archaedasAI(creature);
-        }
+        CreatureAI* GetAI(Creature* creature) const {
+            return new boss_archaedasAI(creature); }
 };
 
 /* ScriptData
@@ -219,21 +214,12 @@ SDComment: These mobs are initially frozen until Archaedas awakens them
 one at a time.
 EndScriptData */
 
-class mob_archaedas_minions : public CreatureScript
-{
-    public:
+class mob_archaedas_minions : public CreatureScript {
+    public: mob_archaedas_minions() : CreatureScript("mob_archaedas_minions") {}
 
-        mob_archaedas_minions()
-            : CreatureScript("mob_archaedas_minions")
-        {
-        }
-
-        struct mob_archaedas_minionsAI : public ScriptedAI
-        {
-            mob_archaedas_minionsAI(Creature* creature) : ScriptedAI(creature)
-            {
-                instance = me->GetInstanceScript();
-            }
+        struct mob_archaedas_minionsAI : public ScriptedAI {
+            mob_archaedas_minionsAI(Creature* creature) : ScriptedAI(creature) {
+				instance = me->GetInstanceScript(); }
 
             uint32 uiArcing_Timer;
             int32 iAwakenTimer;
@@ -249,7 +235,8 @@ class mob_archaedas_minions : public CreatureScript
 
                 bWakingUp = false;
                 bAmIAwake = false;
-
+				
+                me->GetMotionMaster()->MoveTargetedHome();
                 me->setFaction(35);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
@@ -258,7 +245,6 @@ class mob_archaedas_minions : public CreatureScript
 
             void EnterCombat(Unit* /*who*/)
             {
-                me->setFaction (14);
                 me->RemoveAllAuras();
                 me->RemoveFlag (UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 me->RemoveFlag (UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
@@ -291,7 +277,7 @@ class mob_archaedas_minions : public CreatureScript
                 {
                     bWakingUp = false;
                     bAmIAwake = true;
-                    // AttackStart(Unit::GetUnit(*me, instance->GetData64(0))); // whoWokeArchaedasGUID
+                    AttackStart(Unit::GetUnit(*me, instance->GetData64(0))); // whoWokeArchaedasGUID
                     return;     // dont want to continue until we finish the AttackStart method
                 }
 
@@ -303,10 +289,8 @@ class mob_archaedas_minions : public CreatureScript
             }
         };
 
-        CreatureAI* GetAI(Creature* creature) const
-        {
-            return new mob_archaedas_minionsAI(creature);
-        }
+        CreatureAI* GetAI(Creature* creature) const {
+			return new mob_archaedas_minionsAI(creature); }
 };
 
 /* ScriptData
@@ -318,14 +302,8 @@ EndScriptData */
 
 #define SPELL_SELF_DESTRUCT 9874
 
-class mob_stonekeepers : public CreatureScript
-{
-    public:
-
-        mob_stonekeepers()
-            : CreatureScript("mob_stonekeepers")
-        {
-        }
+class mob_stonekeepers : public CreatureScript {
+    public: mob_stonekeepers() : CreatureScript("mob_stonekeepers") {}
 
         struct mob_stonekeepersAI : public ScriptedAI
         {
@@ -338,17 +316,11 @@ class mob_stonekeepers : public CreatureScript
 
             void Reset()
             {
+                me->GetMotionMaster()->MoveTargetedHome();
                 me->setFaction(35);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
                 me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
                 me->RemoveAllAuras();
-            }
-
-            void EnterCombat(Unit* /*who*/)
-            {
-                me->setFaction(14);
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
             }
 
             void UpdateAI(const uint32 /*diff*/)
@@ -368,10 +340,8 @@ class mob_stonekeepers : public CreatureScript
             }
         };
 
-        CreatureAI* GetAI(Creature* creature) const
-        {
-            return new mob_stonekeepersAI(creature);
-        }
+        CreatureAI* GetAI(Creature* creature) const {
+            return new mob_stonekeepersAI(creature); }
 };
 
 /* ScriptData
@@ -381,14 +351,8 @@ SDComment: Needs 1 person to activate the Archaedas script
 SDCategory: Uldaman
 EndScriptData */
 
-class go_altar_of_archaedas : public GameObjectScript
-{
-    public:
-
-        go_altar_of_archaedas()
-            : GameObjectScript("go_altar_of_archaedas")
-        {
-        }
+class go_altar_of_archaedas : public GameObjectScript {
+    public: go_altar_of_archaedas() : GameObjectScript("go_altar_of_archaedas") {}
 
         bool OnGossipHello(Player* player, GameObject* /*go*/)
         {
@@ -410,14 +374,9 @@ SDComment: Need 1 person to activate to open the altar.  One by one the StoneKee
 SDCategory: Uldaman
 EndScriptData */
 
-class go_altar_of_the_keepers : public GameObjectScript
-{
-    public:
-
-        go_altar_of_the_keepers()
-            : GameObjectScript("go_altar_of_the_keepers")
-        {
-        }
+class go_altar_of_the_keepers : public GameObjectScript {
+    public: go_altar_of_the_keepers()
+            : GameObjectScript("go_altar_of_the_keepers") {}
 
         bool OnGossipHello(Player* player, GameObject* /*go*/)
         {
