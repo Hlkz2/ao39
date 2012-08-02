@@ -5824,6 +5824,8 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
                 // check attack comes not from behind
                 if (!HasInArc(M_PI, victim))
                     return false;
+				if (HasAuraType(SPELL_AURA_MOD_STUN))
+					return false;
 
                 triggered_spell_id = 22858;
                 break;
