@@ -5614,9 +5614,14 @@ void Player::RepopAtGraveyard()
     // stop countdown until repop
     m_deathTimer = 0;
 
+	if (GetMapId() == 169) {
+		ResurrectPlayer(1);
+		SpawnCorpseBones();
+		TeleportTo(169, -2981.824f, 1708.851f, 92.01f, 5.6f); }
+
     // if no grave found, stay at the current location
     // and don't show spirit healer location
-    if (ClosestGrave)
+	if (ClosestGrave)
     {
         TeleportTo(ClosestGrave->map_id, ClosestGrave->x, ClosestGrave->y, ClosestGrave->z, GetOrientation());
 		
