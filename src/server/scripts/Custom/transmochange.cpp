@@ -147,24 +147,24 @@ player->PlayerTalkClass->ClearMenus();
         player->SEND_GOSSIP_MENU(1000021, creature->GetGUID());
 		break;
 	case 60:
-		if (player->HasItemCount(43307, 15, 0)) {
-			player->DestroyItemCount(43307, 15, true, false);
+		if (player->GetArenaPoints() >= 15) {
+			player->SetArenaPoints(player->GetArenaPoints()-15);
 			player->AddItem(40752, 5);
 			session->SendAreaTriggerMessage("Vous avez reçu 5 emblèmes."); }
 		else session->SendNotification("Vous n'avez pas les objets requis.");
 		OnGossipSelect(player, creature, sender, 6);
 		break;
 	case 61:
-		if (player->HasItemCount(43307, 30, 0)) {
-			player->DestroyItemCount(43307, 30, true, false);
+		if (player->GetArenaPoints() >= 30) {
+			player->SetArenaPoints(player->GetArenaPoints()-30);
 			player->AddItem(40752, 10);
 			session->SendAreaTriggerMessage("Vous avez reçu 10 emblèmes."); }
 		else session->SendNotification("Vous n'avez pas les objets requis.");
 		OnGossipSelect(player, creature, sender, 6);
 		break;
 	case 62:
-		if (player->HasItemCount(43307, 150, 0)) {
-			player->DestroyItemCount(43307, 150, true, false);
+		if (player->GetArenaPoints() >= 150) {
+			player->SetArenaPoints(player->GetArenaPoints()-150);
 			player->AddItem(40752, 50);
 			session->SendAreaTriggerMessage("Vous avez reçu 50 emblèmes."); }
 		else session->SendNotification("Vous n'avez pas les objets requis.");
