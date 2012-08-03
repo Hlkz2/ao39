@@ -1251,6 +1251,7 @@ void AddSc_Com_Talent();
 void AddSc_Com_Rand();
 void AddSc_Com_Suffix();
 void AddSC_NPC_Transmogrify();
+void AddSc_transmochange();
 //boss
 void AddSC_kahz();
 #endif
@@ -1274,6 +1275,7 @@ void AddCustomScripts()
 	AddSc_Com_Rand();
 	AddSc_Com_Suffix();
 	AddSC_NPC_Transmogrify();
+	AddSc_transmochange();
 	//boss
 	AddSC_kahz();
 #endif

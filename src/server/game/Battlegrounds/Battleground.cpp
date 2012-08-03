@@ -867,10 +867,20 @@ void Battleground::EndBattleground(uint32 winner)
         uint32 winner_kills = player->GetRandomWinner() ? BG_REWARD_WINNER_HONOR_LAST : BG_REWARD_WINNER_HONOR_FIRST;
         uint32 loser_kills = player->GetRandomWinner() ? BG_REWARD_LOSER_HONOR_LAST : BG_REWARD_LOSER_HONOR_FIRST;
         uint32 winner_arena = player->GetRandomWinner() ? BG_REWARD_WINNER_ARENA_LAST : BG_REWARD_WINNER_ARENA_FIRST;
+		
+		switch(player->GetMapId()) { // custom mark
+			case 489: player->AddItem(20558, 1); break;
+            case 529: player->AddItem(20559, 1); break;
+            default: break; }
 
         // Reward winner team
         if (team == winner)
         {
+			switch(player->GetMapId()) {
+				case 489: player->CastSpell(player, 43483, true); player->AddItem(20558, 2); break;
+                case 529: player->CastSpell(player, 43484, true); player->AddItem(20559, 2); break;
+                default: break; }
+
             if (IsRandom() || BattlegroundMgr::IsBGWeekend(GetTypeID()))
             {
                 UpdatePlayerScore(player, SCORE_BONUS_HONOR, GetBonusHonorFromKill(winner_kills));

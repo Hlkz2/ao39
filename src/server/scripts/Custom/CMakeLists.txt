@@ -25,6 +25,8 @@ set(scripts_STAT_SRCS
   Custom/comrand.cpp
   Custom/comsuffix.cpp
   Custom/Transmogrification.cpp
+  Custom/transmochange.cpp
+  
  
   Custom/kahz.cpp
 )
