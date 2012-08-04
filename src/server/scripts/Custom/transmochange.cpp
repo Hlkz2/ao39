@@ -151,7 +151,7 @@ player->PlayerTalkClass->ClearMenus();
     case 6:
         player->ADD_GOSSIP_ITEM(1, "Acheter 5 emblèmes pour 25 points d'arène", GOSSIP_SENDER_MAIN, 60);
         player->ADD_GOSSIP_ITEM(1, "Acheter 10 emblèmes pour 50 points d'arène", GOSSIP_SENDER_MAIN, 61);
-        player->ADD_GOSSIP_ITEM(1, "Acheter 50 emblèmes pour 150 points d'arène", GOSSIP_SENDER_MAIN, 62);
+        player->ADD_GOSSIP_ITEM(1, "Acheter 50 emblèmes pour 250 points d'arène", GOSSIP_SENDER_MAIN, 62);
         player->ADD_GOSSIP_ITEM(0, "<Retour>", GOSSIP_SENDER_MAIN, 1);
         player->SEND_GOSSIP_MENU(1000021, creature->GetGUID());
 		break;
