@@ -9,7 +9,7 @@ void MainMenu(Player *player, Creature *creature) {
 	player->ADD_GOSSIP_ITEM(7, "Insignes de justice...", GOSSIP_SENDER_MAIN, 4);
 	player->ADD_GOSSIP_ITEM(7, "Marques d'honneur...", GOSSIP_SENDER_MAIN, 5);
 	player->ADD_GOSSIP_ITEM(7, "Points d'arène...", GOSSIP_SENDER_MAIN, 6);
-	player->ADD_GOSSIP_ITEM(7, "Trophées valereux...", GOSSIP_SENDER_MAIN, 7);
+	player->ADD_GOSSIP_ITEM(7, "Trophées valeureux...", GOSSIP_SENDER_MAIN, 7);
 	player->ADD_GOSSIP_ITEM(0, "<Aurevoir>", GOSSIP_SENDER_MAIN, 0);
 	player->SEND_GOSSIP_MENU(1000021, creature->GetGUID()); }
 
