@@ -5651,7 +5651,7 @@ void Player::RepopAtGraveyard()
 				CastSpell(this,29921,false); // invisibilité
 			}
 
-			if (!InBattleground())
+			if (GetMapId() == 37 || GetMapId() == 532)
 				RemoveAllSpellCooldown();
 
         }
