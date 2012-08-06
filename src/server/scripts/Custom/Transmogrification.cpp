@@ -22,8 +22,9 @@ bool OnGossipHello(Player* player, Creature* creature) {
 	for (uint8 slot = EQUIPMENT_SLOT_START; slot < EQUIPMENT_SLOT_TABARD; slot++) {// EQUIPMENT_SLOT_END
         if (Item* newItem = player->GetItemByPos(INVENTORY_SLOT_BAG_0, slot)) {
 	    if (newItem->HasGoodFakeQuality()) {
+			if (slot == 0 || slot == 2 || slot == 4 || slot == 6 || slot == 9) {
 			if (const char* slotName = GetSlotName(slot, session))
-            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TRAINER, slotName, EQUIPMENT_SLOT_END, slot); } } }
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TRAINER, slotName, EQUIPMENT_SLOT_END, slot); } } } }
 //      player->ADD_GOSSIP_ITEM_EXTENDED(GOSSIP_ICON_INTERACT_1, session->GetTrinityString(LANG_OPTION_REMOVE_ALL), EQUIPMENT_SLOT_END+2, 0, session->GetTrinityString(LANG_POPUP_REMOVE_ALL), 0, false);
         player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, session->GetTrinityString(LANG_OPTION_UPDATE_MENU), EQUIPMENT_SLOT_END+1, 0);
         player->SEND_GOSSIP_MENU(1000022, creature->GetGUID());
