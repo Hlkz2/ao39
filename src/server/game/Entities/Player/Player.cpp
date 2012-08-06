@@ -5651,6 +5651,9 @@ void Player::RepopAtGraveyard()
 				CastSpell(this,29921,false); // invisibilité
 			}
 
+			if (!InBattleground())
+				RemoveAllSpellCooldown();
+
         }
     }
     else if (GetPositionZ() < -500.0f)
