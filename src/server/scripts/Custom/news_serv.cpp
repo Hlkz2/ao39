@@ -13,9 +13,9 @@ void MainMenu(Player *player, Creature *creature) {
 	player->ADD_GOSSIP_ITEM(0, "- Les zones FFA", GOSSIP_SENDER_MAIN, 5);
 	player->ADD_GOSSIP_ITEM(0, "- Le PvE", GOSSIP_SENDER_MAIN, 4);
 	player->ADD_GOSSIP_ITEM(0, "- Une ouverture au monde ?", GOSSIP_SENDER_MAIN, 7);
-	player->ADD_GOSSIP_ITEM(0, "- Ou sont les maîtres de classe ?", GOSSIP_SENDER_MAIN, 3);
-	player->ADD_GOSSIP_ITEM(0, "- Quelles récompenses ?", GOSSIP_SENDER_MAIN, 6);
-	player->ADD_GOSSIP_ITEM(0, "- Qu'en est-il du royaume RP ?", GOSSIP_SENDER_MAIN, 8);
+	player->ADD_GOSSIP_ITEM(0, "- Où sont les maîtres de classe ?", GOSSIP_SENDER_MAIN, 3);
+	player->ADD_GOSSIP_ITEM(0, "- Récompenses", GOSSIP_SENDER_MAIN, 6);
+	player->ADD_GOSSIP_ITEM(0, "- Royaume RP", GOSSIP_SENDER_MAIN, 8);
 	player->ADD_GOSSIP_ITEM(0, "<Quitter>", GOSSIP_SENDER_MAIN, 10);
 	player->SEND_GOSSIP_MENU(1000007, creature->GetGUID()); }
 
@@ -54,7 +54,7 @@ switch (action) {
 	player->SEND_GOSSIP_MENU(1000007, creature->GetGUID());
 	break;
 	case 6:
-    player->ADD_GOSSIP_ITEM(0, "Les récompenses d'honneur, arène, worldboss, FFA, journalières et boutiques sont et resteront distinctes les unes des autres. Chaque mois les titres pour les premiers en haut faits, areèe et vh seront redistribués. De toutes les récompenses possible, la seule amélioration visible en termes de statistiques sera la vitesse des montures 100%. (vielle école, zhevra et destrier cramoisi)", GOSSIP_SENDER_MAIN, 6);
+    player->ADD_GOSSIP_ITEM(0, "Les récompenses d'honneur, arène, worldboss, FFA, journalières et boutiques sont et resteront distinctes les unes des autres. Chaque mois les titres pour les premiers en haut faits, arène et vh seront redistribués. De toutes les récompenses possible, la seule amélioration visible en termes de statistiques sera la vitesse des montures 100%. (vielle école, zhevra et destrier cramoisi) Une nouveauté : la transmogrification. Celle ci est universelle aux monnaies, en dehors des têtes qui seront elles séparées. Pas d'armes pour le moment.", GOSSIP_SENDER_MAIN, 6);
     player->ADD_GOSSIP_ITEM(0, "<Retour>", GOSSIP_SENDER_MAIN, 100);
 	player->SEND_GOSSIP_MENU(1000007, creature->GetGUID());
 	break;
@@ -64,7 +64,7 @@ switch (action) {
 	player->SEND_GOSSIP_MENU(1000007, creature->GetGUID());
 	break;
 	case 8:
-    player->ADD_GOSSIP_ITEM(0, "Le projet est actuellement en suspend, mais il sera très prochainement repris, bien que nous en sommes encore au point de choisir son fonctionnement. Contactez Hlkz sur le forum pour plus d'information.", GOSSIP_SENDER_MAIN, 7);
+    player->ADD_GOSSIP_ITEM(0, "Le projet a été repris ! Un sondage est en cours sur le forum, nous avons besoin de vos avis.", GOSSIP_SENDER_MAIN, 7);
     player->ADD_GOSSIP_ITEM(0, "<Retour>", GOSSIP_SENDER_MAIN, 100);
 	player->SEND_GOSSIP_MENU(1000007, creature->GetGUID());
 	break;
