@@ -95,6 +95,7 @@ public:
             { "delete",         SEC_GAMEMASTER,     false, NULL,              "", npcDeleteCommandTable },
             { "follow",         SEC_GAMEMASTER,     false, NULL,              "", npcFollowCommandTable },
             { "set",            SEC_GAMEMASTER,     false, NULL,                 "", npcSetCommandTable },
+            { "go  ",           SEC_GAMEMASTER,     false, &HandleNpcGoCommand,	               "", NULL },
             { NULL,             0,                  false, NULL,                               "", NULL }
         };
         static ChatCommand commandTable[] =
@@ -1182,7 +1183,7 @@ public:
 
         return true;
     }
-
+	
     //npc tame handling
     static bool HandleNpcTameCommand(ChatHandler* handler, const char* /*args*/)
     {
@@ -1247,6 +1248,16 @@ public:
         pet->SavePetToDB(PET_SAVE_AS_CURRENT);
         player->PetSpellInitialize();
 
+        return true;
+    }
+
+    //npc go handling CUSTOM
+    static bool HandleNpcGoCommand(ChatHandler* handler, const char* /*args*/)
+    {
+        Creature* creatureTarget = handler->getSelectedCreature();
+        if (!creatureTarget) return false;
+        Player* player = handler->GetSession()->GetPlayer();
+		creatureTarget->GetMotionMaster()->MovePoint(1, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ());
         return true;
     }
 

@@ -13,7 +13,7 @@
 #include "QuestDef.h"
 
 // Gossip Item Text
-#define GOSSIP_TEXT_BROWSE_GOODS        "I'd like to browse your goods."
+#define GOSSIP_TEXT_BROWSE_GOODS        "Laissez-moi jetez un coup d'oeil sur vos marchandises."
 #define GOSSIP_TEXT_TRAIN               "Entrainez moi !"
 
 enum eTradeskill
