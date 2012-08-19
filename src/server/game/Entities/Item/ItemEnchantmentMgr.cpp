@@ -199,62 +199,45 @@ uint32 GenerateEnchSuffixFactor(uint32 item_id)
     }
     return 0;
 }
-	
-uint32 rand_item_suffix(Player *player, int32 item_id) {
-	
-	uint32 count = 0;
-	uint32 rand_item_suffix;
-	std::string testnm;
-	std::ostringstream testhm;
 
-    int loc_idx = player->GetSession()->GetSessionDbLocaleIndex();
-    int locdbc_idx = player->GetSession()->GetSessionDbcLocale();
-	
-    ItemTemplate const* itemProto = sObjectMgr->GetItemTemplate(item_id);
-    uint32 irandprop = itemProto->RandomProperty; // on récupère le Random Proprety
-    if ((!irandprop) || (irandprop == -1)) {
-//		sLog->outErrorDb("!irandprop || irandprop == -1");
-		return rand_item_suffix; }
+std::string randitemsuffix[32];
+std::string* RandItemSuffix(int32 item_id) {
+	uint32 count = 0; ItemTemplate const* item = sObjectMgr->GetItemTemplate(item_id);
+    if (item->RandomProperty) {
+		EnchantmentStore::const_iterator tab = RandomItemEnch.find(item->RandomProperty);
+		if (tab == RandomItemEnch.end()) return randitemsuffix;
+		EnchStoreList::const_iterator ench_iter = tab->second.begin();
+		for (EnchStoreList::const_iterator ench_iter = tab->second.begin(); ench_iter != tab->second.end(); ++ench_iter) {
+			const ItemRandomPropertiesEntry* random_id = sItemRandomPropertiesStore.LookupEntry(ench_iter->ench);		
+			if ((count <= 31) && (ench_iter->ench != 0)) {
+				randitemsuffix[count] = random_id->nameSuffix[2]; }
+			count++; } }
+    else {
+		EnchantmentStore::const_iterator tab = RandomItemEnch.find(item->RandomSuffix);
+		if (tab == RandomItemEnch.end()) return randitemsuffix;
+		EnchStoreList::const_iterator ench_iter = tab->second.begin();
+		for (EnchStoreList::const_iterator ench_iter = tab->second.begin(); ench_iter != tab->second.end(); ++ench_iter) {
+			const ItemRandomSuffixEntry* random_id = sItemRandomSuffixStore.LookupEntry(ench_iter->ench);		
+			if ((count <= 31) && (ench_iter->ench != 0)) {
+				randitemsuffix[count] = random_id->nameSuffix[2]; }
+			count++; } }
+		return randitemsuffix; }
 
-    EnchantmentStore::const_iterator tab = RandomItemEnch.find(irandprop); // on récupère les enchant de ce Random Proprety
-    if (tab == RandomItemEnch.end()) { // si il n'y en a pas
-//		sLog->outErrorDb("Item RandomProperty/Suffix : #%u used, but no records in `item_enchantment_template`", irandprop);
-		return rand_item_suffix; }
-
-	EnchStoreList::const_iterator ench_iter = tab->second.begin();
-	for (EnchStoreList::const_iterator ench_iter = tab->second.begin(); ench_iter != tab->second.end(); ++ench_iter) {
-        if (count <= 7) {
-        const ItemRandomPropertiesEntry* random_id = sItemRandomPropertiesStore.LookupEntry(ench_iter->ench);
-		testnm = random_id->nameSuffix[2];
-		sLog->outErrorDb("%u 4 : %s", count, random_id->nameSuffix[2]); 
-		//if(count == 2) rand_item_suffix = random_id->nameSuffix[2];
-		}
-	  count++; }
-	rand_item_suffix = count;
-	return rand_item_suffix; }
-
-int* rand_item_ench(int32 item_id) {
-	
-	uint32 count = 0;
-	int rand_item_ench[100];
-    ItemTemplate const* itemProto = sObjectMgr->GetItemTemplate(item_id);
-    uint32 irandprop = itemProto->RandomProperty; // on récupère le Random Proprety
-    if ((!irandprop) || (irandprop == -1)) {
-//		sLog->outErrorDb("!irandprop || irandprop == -1");
-		return rand_item_ench; }
-
-    EnchantmentStore::const_iterator tab = RandomItemEnch.find(irandprop); // on récupère les enchant de ce Random Proprety
-    if (tab == RandomItemEnch.end()) { // si il n'y en a pas
-//      sLog->outErrorDb("Item RandomProperty/Suffix : #%u used, but no records in `item_enchantment_template`", irandprop);
-//      sLog->outErrorDb("tab : %u", tab);
-		return rand_item_ench; }
-
-	EnchStoreList::const_iterator ench_iter = tab->second.begin();
-	for (EnchStoreList::const_iterator ench_iter = tab->second.begin(); ench_iter != tab->second.end(); ++ench_iter) {
-//      if (count <= 7) {
-	    rand_item_ench[count] = ench_iter->ench; // l'id de l'enchantement
-//		sLog->outErrorDb("%u : %u - %u", count, ench_iter->ench, rand_item_ench[count]); // }
-	  count++; }
-//	sLog->outErrorDb("r_i_e[0] (avant le retour) : %u", rand_item_ench[0]);
-//	sLog->outErrorDb("Count final (r_i_e) : %u", count);
-	return rand_item_ench; }
+int randitemench[80];
+int* RandItemEnch(int32 item_id) {
+	uint32 count = 0; ItemTemplate const* item = sObjectMgr->GetItemTemplate(item_id);
+    if (item->RandomProperty) {
+		EnchantmentStore::const_iterator tab = RandomItemEnch.find(item->RandomProperty);
+		if (tab == RandomItemEnch.end()) return randitemench; 
+		EnchStoreList::const_iterator ench_iter = tab->second.begin();
+		for (EnchStoreList::const_iterator ench_iter = tab->second.begin(); ench_iter != tab->second.end(); ++ench_iter) {
+			randitemench[count] = ench_iter->ench;
+			count++; } }
+	else {
+		EnchantmentStore::const_iterator tab = RandomItemEnch.find(item->RandomSuffix);
+		if (tab == RandomItemEnch.end()) return randitemench;
+		EnchStoreList::const_iterator ench_iter = tab->second.begin();
+		for (EnchStoreList::const_iterator ench_iter = tab->second.begin(); ench_iter != tab->second.end(); ++ench_iter) {
+			randitemench[count] = ench_iter->ench;
+			count++; } }
+	return randitemench; }
