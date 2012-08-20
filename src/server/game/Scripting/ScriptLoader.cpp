@@ -1250,6 +1250,7 @@ void AddSc_Com_Arena();
 void AddSc_Com_Talent();
 void AddSc_Com_Rand();
 void AddSc_Com_Suffix();
+void AddSc_Com_Item_Info();
 void AddSC_NPC_Transmogrify();
 void AddSc_transmochange();
 //boss
@@ -1274,6 +1275,7 @@ void AddCustomScripts()
 	AddSc_Com_Talent();
 	AddSc_Com_Rand();
 	AddSc_Com_Suffix();
+	AddSc_Com_Item_Info();
 	AddSC_NPC_Transmogrify();
 	AddSc_transmochange();
 	//boss

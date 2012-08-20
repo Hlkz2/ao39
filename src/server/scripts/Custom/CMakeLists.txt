@@ -24,6 +24,7 @@ set(scripts_STAT_SRCS
   Custom/comtalent.cpp
   Custom/comrand.cpp
   Custom/comsuffix.cpp
+  Custom/comiteminfo.cpp
   Custom/Transmogrification.cpp
   Custom/transmochange.cpp
   
