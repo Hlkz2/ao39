@@ -12,7 +12,7 @@ static bool HandleComItemInfo(ChatHandler* handler, const char* args) {
 	int32 random = itemt->RandomProperty;
 	if (!itemt) return false;
 	if (!random) return false;
-	ChatHandler(handler->GetSession()->GetPlayer()).PSendSysMessage("Objet %u - EnchEntry %u (%s)", item_id, random, itemt->Name1);
+	ChatHandler(handler->GetSession()->GetPlayer()).PSendSysMessage("Objet %u - EnchEntry %u", item_id, random);
 	return true; }
 
 ChatCommand* GetCommands() const {
