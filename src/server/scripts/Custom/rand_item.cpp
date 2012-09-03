@@ -305,7 +305,7 @@ bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 a
 	    case 712: player->SetRandItId(9877); goto l276276; break;
 
     case 800:
-        retour = action;
+        player->SetRandRetour(action);
         player->ADD_GOSSIP_ITEM(6, "Ceinture de pisteur.", GOSSIP_SENDER_MAIN, 802);
         player->ADD_GOSSIP_ITEM(6, "Bottes de pisteur.", GOSSIP_SENDER_MAIN, 803);
         player->ADD_GOSSIP_ITEM(6, "Gants de pisteur.", GOSSIP_SENDER_MAIN, 804);

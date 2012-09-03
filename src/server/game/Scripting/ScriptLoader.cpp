@@ -1243,7 +1243,6 @@ void AddSc_Bienvenue();
 void AddSc_News_Serv();
 void AddSc_universal_teleporter();
 void AddSc_rand_item();
-void AddSc_rand_item2();
 void AddSc_class_master();
 void AddSc_enchant_npc();
 void AddSc_Com_Arena();
@@ -1268,7 +1267,6 @@ void AddCustomScripts()
 	AddSc_News_Serv();
     AddSc_universal_teleporter();
     AddSc_rand_item();
-    AddSc_rand_item2();
 	AddSc_class_master();
 	AddSc_enchant_npc();
 	AddSc_Com_Arena();
