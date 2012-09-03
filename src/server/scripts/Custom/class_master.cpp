@@ -42,6 +42,8 @@ bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint3
 		if (player->HasSpell(19236)) {
 		player->learnSpell(19240, false);
 		player->learnSpell(19238, false); } // prière du désespoir
+		player->UpdateSkill(185, 450); // cuisine
+		player->UpdateSkill(129, 450); // secourisme
 		creature->CastSpell(player,38588,false);
 		break;
 

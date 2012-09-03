@@ -2542,6 +2542,20 @@ class Player : public Unit, public GridObject<Player>
         }
 
 		uint32 SuitableForTransmogrification(Item* oldItem, Item* newItem); // custom transmo
+		
+        uint8 GetClmSlotid() const { return m_ClmSlotid; }
+        void SetClmSlotid(uint8 slotid) { m_ClmSlotid = slotid; }
+        uint32 GetClmSlty() const { return m_ClmSlty; }
+        void SetClmSlty(uint32 slty) { m_ClmSlty = slty; }
+		
+        int* GetRandRie() const { return m_RandRie; }
+        void SetRandRie(int* rie) { m_RandRie = rie; }
+		std::string* GetRandRis() const { return m_RandRis; }
+        void SetRandRis(std::string* ris) { m_RandRis = ris; }
+        uint32 GetRandRetour() const { return m_RandRetour; }
+        void SetRandRetour(uint32 retour) { m_RandRetour = retour; }
+        uint32 GetRandItId() const { return m_RandItId; }
+        void SetRandItId(uint32 itemid) { m_RandItId = itemid; }
 
     protected:
         // Gamemaster whisper whitelist
@@ -2876,6 +2890,16 @@ class Player : public Unit, public GridObject<Player>
         InstanceTimeMap _instanceResetTimes;
         uint32 _pendingBindId;
         uint32 _pendingBindTimer;
+
+		//custom
+		
+        uint8 m_ClmSlotid;
+        uint32 m_ClmSlty;
+		
+        int* m_RandRie;
+        std::string* m_RandRis;
+        uint32 m_RandRetour;
+        uint32 m_RandItId;
 };
 
 void AddItemsSetItem(Player*player, Item* item);

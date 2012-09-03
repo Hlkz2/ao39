@@ -16,7 +16,6 @@ set(scripts_STAT_SRCS
   Custom/job_master.cpp
   Custom/char_custom.cpp
   Custom/rand_item.cpp
-  Custom/rand_item2.cpp
   Custom/universal_teleporter.cpp
   Custom/class_master.cpp
   Custom/enchant_npc.cpp
@@ -28,7 +27,6 @@ set(scripts_STAT_SRCS
   Custom/Transmogrification.cpp
   Custom/transmochange.cpp
   
- 
   Custom/kahz.cpp
 )
 

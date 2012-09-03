@@ -57,6 +57,8 @@ void WorldSession::HandleDuelAcceptedOpcode(WorldPacket& recvPacket)
 	plTarget->RemoveAllSpellCooldown();
 	player->RemoveAura(25771); // longanimité
 	plTarget->RemoveAura(25771);
+	player->RemoveAura(41425); // hypothermie
+	plTarget->RemoveAura(41425);
 	player->RemoveAura(11196); // bandage
 	plTarget->RemoveAura(11196); }
 	player->SetHealth(player->GetMaxHealth());

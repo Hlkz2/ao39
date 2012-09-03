@@ -40,24 +40,10 @@ bool OnGossipHello(Player* player, Creature* creature) {
 	player->ADD_GOSSIP_ITEM( 3, "Ingénierie" , GOSSIP_SENDER_MAIN, 1003);
 	player->ADD_GOSSIP_ITEM( 3, "Joaillerie" , GOSSIP_SENDER_MAIN, 1006);
 	player->ADD_GOSSIP_ITEM( 3, "Travail du cuir" , GOSSIP_SENDER_MAIN, 1007);
-	player->ADD_GOSSIP_ITEM( 3, "Cuisine (secondaire)" , GOSSIP_SENDER_MAIN, 200);
-	player->ADD_GOSSIP_ITEM( 3, "Secourisme" , GOSSIP_SENDER_MAIN, 201);
 	player->SEND_GOSSIP_MENU(1000004, creature->GetGUID());
 	return true; }
 
 bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action) {
-
-	switch (action) {
-	case 200:
-		player->CLOSE_GOSSIP_MENU();
-		player->learnSpell(51296, false);
-		player->UpdateSkill(185, 450);
-		break;
-	case 201:
-		player->CLOSE_GOSSIP_MENU();
-		player->learnSpell(45542, false);
-		player->UpdateSkill(129, 450);
-		break; }
 
 	if (player->GetFreePrimaryProfessionPoints() >= 1) {
 		switch (action) {	

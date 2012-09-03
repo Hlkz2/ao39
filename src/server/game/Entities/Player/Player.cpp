@@ -5616,7 +5616,7 @@ void Player::RepopAtGraveyard()
 
 	if (GetMapId() == 169) {
 		ResurrectPlayer(0.1f);
-		CastSpell(this,57626,false); }
+		CastSpell(this,58806,false); }
 
     // if no grave found, stay at the current location
     // and don't show spirit healer location
@@ -5647,7 +5647,7 @@ void Player::RepopAtGraveyard()
 
 			if (GetMapId() == 585 || GetMapId() == 230 || GetZoneId() == 2079 || GetAreaId() == 3357)
 			{
-				CastSpell(this,29921,false); // invisibilité
+				CastSpell(this,32612,false); // invisibilité
 			}
 
 			if (GetMapId() == 37 || GetMapId() == 532)
@@ -25667,32 +25667,24 @@ void Player::SendMovementSetFeatherFall(bool apply)
 
 uint32 Player::SuitableForTransmogrification(Item* oldItem, Item* newItem) { // custom transmo
 	
-	sLog->outErrorDb("test0 : %u %u", oldItem->GetTemplate()->ItemId, newItem->GetTemplate()->ItemId);
-    // not possibly the best structure here, but atleast I got my head around this
     if (!newItem->HasGoodFakeQuality())
         return ERR_FAKE_NEW_BAD_QUALITY;
-	sLog->outErrorDb("test1");
     if (!oldItem->HasGoodFakeQuality())
         return ERR_FAKE_OLD_BAD_QUALITY;
-	sLog->outErrorDb("test2");
     if (oldItem->GetTemplate()->DisplayInfoID == newItem->GetTemplate()->DisplayInfoID)
         return ERR_FAKE_SAME_DISPLAY;
-	sLog->outErrorDb("test3");
     if (oldItem->GetFakeEntry())
         if (const ItemTemplate* fakeItemTemplate = sObjectMgr->GetItemTemplate(oldItem->GetFakeEntry()))
             if (fakeItemTemplate->DisplayInfoID == newItem->GetTemplate()->DisplayInfoID)
                 return ERR_FAKE_SAME_DISPLAY_FAKE;
-//    if (CanUseItem(newItem, false) != EQUIP_ERR_OK) return ERR_FAKE_CANT_USE;
     uint32 newClass = newItem->GetTemplate()->Class;
     uint32 oldClass = oldItem->GetTemplate()->Class;
     uint32 newSubClass = newItem->GetTemplate()->SubClass;
     uint32 oldSubClass = oldItem->GetTemplate()->SubClass;
     uint32 newInventorytype = newItem->GetTemplate()->InventoryType;
     uint32 oldInventorytype = oldItem->GetTemplate()->InventoryType;
-	sLog->outErrorDb("test4 %u %u", oldClass, newClass);
     if (newClass != oldClass)
         return ERR_FAKE_NOT_SAME_CLASS;
-	sLog->outErrorDb("test5");
     if (newClass == ITEM_CLASS_WEAPON && newSubClass != ITEM_SUBCLASS_WEAPON_FISHING_POLE && oldSubClass != ITEM_SUBCLASS_WEAPON_FISHING_POLE) {
         if (newSubClass == oldSubClass || ((newSubClass == ITEM_SUBCLASS_WEAPON_BOW || newSubClass == ITEM_SUBCLASS_WEAPON_GUN || newSubClass == ITEM_SUBCLASS_WEAPON_CROSSBOW) && (oldSubClass == ITEM_SUBCLASS_WEAPON_BOW || oldSubClass == ITEM_SUBCLASS_WEAPON_GUN || oldSubClass == ITEM_SUBCLASS_WEAPON_CROSSBOW)))
             if (newInventorytype == oldInventorytype || (newInventorytype == INVTYPE_WEAPON && (oldInventorytype == INVTYPE_WEAPONMAINHAND || oldInventorytype == INVTYPE_WEAPONOFFHAND)))
@@ -25700,7 +25692,6 @@ uint32 Player::SuitableForTransmogrification(Item* oldItem, Item* newItem) { // 
             else return ERR_FAKE_BAD_INVENTORYTYPE;
         else return ERR_FAKE_BAD_SUBLCASS; }
     else if (newClass == ITEM_CLASS_ARMOR) {
-//		if (newSubClass == oldSubClass) {
 	    if (newSubClass >= 2) {
 			if (getClass() == CLASS_MAGE || getClass() == CLASS_WARLOCK || getClass() == CLASS_PRIEST)
 				return ERR_FAKE_BAD_CLASS;
@@ -25714,5 +25705,4 @@ uint32 Player::SuitableForTransmogrification(Item* oldItem, Item* newItem) { // 
 
 	if (newInventorytype == oldInventorytype || (newInventorytype == INVTYPE_CHEST && oldInventorytype == INVTYPE_ROBE) || (newInventorytype == INVTYPE_ROBE && oldInventorytype == INVTYPE_CHEST))
 		return ERR_FAKE_OK;
-	sLog->outErrorDb("wtf ? hm.. new ? %u .. okay old ? %u .. fuuu x)", newInventorytype, oldInventorytype);
 	return ERR_FAKE_BAD_INVENTORYTYPE; }

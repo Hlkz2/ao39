@@ -1,7 +1,37 @@
 #include "ScriptPCH.h"
 
 class rand_item : public CreatureScript {
-	public: rand_item() : CreatureScript("rand_item"){}
+	public: rand_item() : CreatureScript("rand_item") {}
+
+uint32 count; std::string* rie;
+
+int32 Choix(int32 item_id, int choix) {
+    ItemTemplate const* itemProto = sObjectMgr->GetItemTemplate(item_id);
+    if (!itemProto) return 0;
+    if ((!itemProto->RandomProperty) && (!itemProto->RandomSuffix)) return 0;
+    if ((itemProto->RandomProperty) && (itemProto->RandomSuffix)) return 0;
+    if (itemProto->RandomProperty) {
+        uint32 randomPropId = choix;
+        ItemRandomPropertiesEntry const* random_id = sItemRandomPropertiesStore.LookupEntry(randomPropId);
+        if (!random_id) return 0;
+        return random_id->ID; }
+    else {
+        uint32 randomPropId = choix;
+        ItemRandomSuffixEntry const* random_id = sItemRandomSuffixStore.LookupEntry(randomPropId);
+        if (!random_id) return 0;
+        return -int32(random_id->ID); } }
+
+void AddItemChoix(Player *player, uint32 item_id, int choix) {
+    uint32 noSpaceForCount = 0;
+    ItemPosCountVec dest;
+    InventoryResult msg = player->CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, item_id, 1, &noSpaceForCount);
+    if (msg != EQUIP_ERR_OK)
+    if (dest.empty()) {
+        ChatHandler(player).PSendSysMessage("Vous n'avez plus de place.");
+        return; }
+		Item* item = player->StoreNewItem(dest, item_id, true, Choix(item_id, choix));
+		if (item) player->SendNewItem(item, 1, true, false);
+    return; }
 
 void MainMenu(Player *player, Creature *creature) {
 	player->ADD_GOSSIP_ITEM(6, "Rare...", GOSSIP_SENDER_MAIN, 150);
@@ -15,47 +45,41 @@ void MainMenu(Player *player, Creature *creature) {
 	player->ADD_GOSSIP_ITEM(6, "Pisteur / Imposant...", GOSSIP_SENDER_MAIN, 800);
 	player->ADD_GOSSIP_ITEM(6, "Ancien / De maille d'os...", GOSSIP_SENDER_MAIN, 900);
 	player->ADD_GOSSIP_ITEM(6, "Veneur...", GOSSIP_SENDER_MAIN, 950);
-	player->ADD_GOSSIP_ITEM(0, "Da test", GOSSIP_SENDER_MAIN, 1000);
-	player->SEND_GOSSIP_MENU(1000009, creature->GetGUID()); }
+	player->SEND_GOSSIP_MENU(1000023, creature->GetGUID()); }
 	
 bool OnGossipHello(Player *player, Creature * creature) { MainMenu(player, creature); return true; }
 	
 bool OnGossipSelect(Player *player, Creature * creature, uint32 sender, uint32 action) {
-
     player->PlayerTalkClass->ClearMenus();
-		switch (action){
+
+		switch (action) {
 	
 	case 100: MainMenu(player, creature); break;
 
 	case 101: player->CLOSE_GOSSIP_MENU(); break;
-
-
-/////////////////////// BLUE /////////////////////////////
-
-l150 :
+		
     case 150:
+        player->SetRandRetour(action);
         player->ADD_GOSSIP_ITEM(6, "Garde-bras de Revelosh.", GOSSIP_SENDER_MAIN, 152);
-        player->ADD_GOSSIP_ITEM(6, "Spalières de Revelosh.", GOSSIP_SENDER_MAIN, 153);
+        player->ADD_GOSSIP_ITEM(6, "Spallières de Revelosh.", GOSSIP_SENDER_MAIN, 153);
         player->ADD_GOSSIP_ITEM(6, "Gants de Revelosh.", GOSSIP_SENDER_MAIN, 154);
         player->ADD_GOSSIP_ITEM(6, "Poignets déterrés.", GOSSIP_SENDER_MAIN, 155);
         player->ADD_GOSSIP_ITEM(6, "Chevalière d'aigue marine.", GOSSIP_SENDER_MAIN, 156);
         player->ADD_GOSSIP_ITEM(6, "Brassards d'Ironaya.", GOSSIP_SENDER_MAIN, 157);
         player->ADD_GOSSIP_ITEM(6, "Lentille verte.", GOSSIP_SENDER_MAIN, 158);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+        player->SEND_GOSSIP_MENU(1000023, creature->GetGUID());
 		break;
-	    case 152: player->AddItem(9388, 1); goto l150; break;
-	    case 153: player->AddItem(9389, 1); goto l150; break;
-	    case 154: player->AddItem(9390, 1); goto l150; break;
-	    case 155: player->AddItem(9428, 1); goto l150; break;
-	    case 156: player->AddItem(20964, 1); goto l150; break;
-	    case 157: player->AddItem(9409, 1); goto l150; break;
-	    case 158: player->AddItem(10504, 1); goto l150; break;
+	    case 152: player->SetRandItId(9388); goto l276276; break;
+	    case 153: player->SetRandItId(9389); goto l276276; break;
+	    case 154: player->SetRandItId(9390); goto l276276; break;
+	    case 155: player->SetRandItId(9428); goto l276276; break;
+	    case 156: player->SetRandItId(20964); goto l276276; break;
+	    case 157: player->SetRandItId(9409); goto l276276; break;
+	    case 158: player->SetRandItId(10504); goto l276276; break;
 
-/////////////////////// HS /////////////////////////////
-
-l200 :
     case 200:
+        player->SetRandRetour(action);
         player->ADD_GOSSIP_ITEM(6, "Cape de tulle.", GOSSIP_SENDER_MAIN, 202);
         player->ADD_GOSSIP_ITEM(6, "Cape de champion.", GOSSIP_SENDER_MAIN, 203);
         player->ADD_GOSSIP_ITEM(6, "Cape de cabaliste.", GOSSIP_SENDER_MAIN, 204);
@@ -67,23 +91,21 @@ l200 :
         player->ADD_GOSSIP_ITEM(6, "Baguette de braise.", GOSSIP_SENDER_MAIN, 210);
         player->ADD_GOSSIP_ITEM(6, "Kriss sacrificiel.", GOSSIP_SENDER_MAIN, 211);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+        player->SEND_GOSSIP_MENU(1000023, creature->GetGUID());
 		break;
-	    case 202: player->AddItem(7524, 1); goto l200; break;
-	    case 203: player->AddItem(7544, 1); goto l200; break;
-	    case 204: player->AddItem(7533, 1); goto l200; break;
-	    case 205: player->AddItem(14261, 1); goto l200; break;
-	    case 206: player->AddItem(14260, 1); goto l200; break;
-	    case 207: player->AddItem(15156, 1); goto l200; break;
-	    case 208: player->AddItem(15592, 1); goto l200; break;
-	    case 209: player->AddItem(3430, 1); goto l200; break;
-	    case 210: player->AddItem(5215, 1); goto l200; break;
-	    case 211: player->AddItem(3187, 1); goto l200; break;
-		
-/////////////////////// RégaliEN/SOMBREBRUME /////////////////////////////
+	    case 202: player->SetRandItId(7524); goto l276276; break;
+	    case 203: player->SetRandItId(7544); goto l276276; break;
+	    case 204: player->SetRandItId(7533); goto l276276; break;
+	    case 205: player->SetRandItId(14261); goto l276276; break;
+	    case 206: player->SetRandItId(14260); goto l276276; break;
+	    case 207: player->SetRandItId(15156); goto l276276; break;
+	    case 208: player->SetRandItId(15592); goto l276276; break;
+	    case 209: player->SetRandItId(3430); goto l276276; break;
+	    case 210: player->SetRandItId(5215); goto l276276; break;
+	    case 211: player->SetRandItId(3187); goto l276276; break;
 
-l250 :
     case 250:
+        player->SetRandRetour(action);
         player->ADD_GOSSIP_ITEM(6, "Jambières Régaliennes", GOSSIP_SENDER_MAIN, 252);
         player->ADD_GOSSIP_ITEM(6, "Chapeau de sorcier Régalien.", GOSSIP_SENDER_MAIN, 253);
         player->ADD_GOSSIP_ITEM(6, "Gants Régaliens.", GOSSIP_SENDER_MAIN, 254);
@@ -102,30 +124,28 @@ l250 :
         player->ADD_GOSSIP_ITEM(6, "Poignets de Sombrebrume.", GOSSIP_SENDER_MAIN, 267);
         player->ADD_GOSSIP_ITEM(6, "Cape de Sombrebrume.", GOSSIP_SENDER_MAIN, 268);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+        player->SEND_GOSSIP_MENU(1000023, creature->GetGUID());
 		break;
-	    case 252: player->AddItem(7469, 1); goto l250; break;
-		case 253: player->AddItem(7470, 1); goto l250; break;
-	    case 254: player->AddItem(7471, 1); goto l250; break;
-	    case 255: player->AddItem(7472, 1); goto l250; break;
-	    case 256: player->AddItem(7473, 1); goto l250; break;
-	    case 257: player->AddItem(7474, 1); goto l250; break;
-	    case 258: player->AddItem(7475, 1); goto l250; break;
-	    case 259: player->AddItem(7476, 1); goto l250; break;
-	    case 260: player->AddItem(7555, 1); goto l250; break;
-	    case 261: player->AddItem(14246, 1); goto l250; break;
-	    case 262: player->AddItem(14242, 1); goto l250; break;
-	    case 263: player->AddItem(14243, 1); goto l250; break;
-	    case 264: player->AddItem(14238, 1); goto l250; break;
-	    case 265: player->AddItem(14241, 1); goto l250; break;
-	    case 266: player->AddItem(14245, 1); goto l250; break;
-	    case 267: player->AddItem(14240, 1); goto l250; break;
-	    case 268: player->AddItem(14239, 1); goto l250; break;
+	    case 252: player->SetRandItId(7469); goto l276276; break;
+		case 253: player->SetRandItId(7470); goto l276276; break;
+	    case 254: player->SetRandItId(7471); goto l276276; break;
+	    case 255: player->SetRandItId(7472); goto l276276; break;
+	    case 256: player->SetRandItId(7473); goto l276276; break;
+	    case 257: player->SetRandItId(7474); goto l276276; break;
+	    case 258: player->SetRandItId(7475); goto l276276; break;
+	    case 259: player->SetRandItId(7476); goto l276276; break;
+	    case 260: player->SetRandItId(7555); goto l276276; break;
+	    case 261: player->SetRandItId(14246); goto l276276; break;
+	    case 262: player->SetRandItId(14242); goto l276276; break;
+	    case 263: player->SetRandItId(14243); goto l276276; break;
+	    case 264: player->SetRandItId(14238); goto l276276; break;
+	    case 265: player->SetRandItId(14241); goto l276276; break;
+	    case 266: player->SetRandItId(14245); goto l276276; break;
+	    case 267: player->SetRandItId(14240); goto l276276; break;
+	    case 268: player->SetRandItId(14239); goto l276276; break;
 
-/////////////////////// DJ ALEA /////////////////////////////
-
-l300 :
     case 300:
+        player->SetRandRetour(action);
         player->ADD_GOSSIP_ITEM(6, "Collier tumultueux.", GOSSIP_SENDER_MAIN, 306);
         player->ADD_GOSSIP_ITEM(6, "Anneau tumultueux.", GOSSIP_SENDER_MAIN, 310);
         player->ADD_GOSSIP_ITEM(6, "Cape tumultueuse.", GOSSIP_SENDER_MAIN, 302);
@@ -139,25 +159,23 @@ l300 :
         player->ADD_GOSSIP_ITEM(6, "Garde-épaules lies a la terre.", GOSSIP_SENDER_MAIN, 309);
         player->ADD_GOSSIP_ITEM(6, "Ceinturon lies a la terre.", GOSSIP_SENDER_MAIN, 313);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+        player->SEND_GOSSIP_MENU(1000023, creature->GetGUID());
 		break;
-	    case 302: player->AddItem(51994, 1); goto l300; break;
-	    case 303: player->AddItem(51965, 1); goto l300; break;
-	    case 304: player->AddItem(51973, 1); goto l300; break;
-	    case 305: player->AddItem(51980, 1); goto l300; break;
-	    case 306: player->AddItem(51996, 1); goto l300; break;
-	    case 307: player->AddItem(51966, 1); goto l300; break;
-	    case 308: player->AddItem(51974, 1); goto l300; break;
-		case 309: player->AddItem(51976, 1); goto l300; break;
-	    case 310: player->AddItem(51992, 1); goto l300; break;
-	    case 311: player->AddItem(51968, 1); goto l300; break;
-	    case 312: player->AddItem(51964, 1); goto l300; break;
-	    case 313: player->AddItem(51978, 1); goto l300; break;
-		
-/////////////////////// ROYAL/LUNAIRE /////////////////////////////
+	    case 302: player->SetRandItId(51994); goto l276276; break;
+	    case 303: player->SetRandItId(51965); goto l276276; break;
+	    case 304: player->SetRandItId(51973); goto l276276; break;
+	    case 305: player->SetRandItId(51980); goto l276276; break;
+	    case 306: player->SetRandItId(51996); goto l276276; break;
+	    case 307: player->SetRandItId(51966); goto l276276; break;
+	    case 308: player->SetRandItId(51974); goto l276276; break;
+		case 309: player->SetRandItId(51976); goto l276276; break;
+	    case 310: player->SetRandItId(51992); goto l276276; break;
+	    case 311: player->SetRandItId(51968); goto l276276; break;
+	    case 312: player->SetRandItId(51964); goto l276276; break;
+	    case 313: player->SetRandItId(51978); goto l276276; break;
 
-l400 :
     case 400:
+        player->SetRandRetour(action);
         player->ADD_GOSSIP_ITEM(6, "Echarpe royale.", GOSSIP_SENDER_MAIN, 402);
         player->ADD_GOSSIP_ITEM(6, "Bottes royales.", GOSSIP_SENDER_MAIN, 403);
         player->ADD_GOSSIP_ITEM(6, "Cape royale.", GOSSIP_SENDER_MAIN, 404);
@@ -169,23 +187,21 @@ l400 :
         player->ADD_GOSSIP_ITEM(6, "Manchettes lunaires.", GOSSIP_SENDER_MAIN, 410);
         player->ADD_GOSSIP_ITEM(6, "Ceinture lunaire.", GOSSIP_SENDER_MAIN, 411);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+        player->SEND_GOSSIP_MENU(1000023, creature->GetGUID());
 		break;
-	    case 402: player->AddItem(9906, 1); goto l400; break;
-	    case 403: player->AddItem(9907, 1); goto l400; break;
-	    case 404: player->AddItem(9908, 1); goto l400; break;
-	    case 405: player->AddItem(9909, 1); goto l400; break;
-	    case 406: player->AddItem(9910, 1); goto l400; break;
-	    case 407: player->AddItem(14247, 1); goto l400; break;
-	    case 408: player->AddItem(14253, 1); goto l400; break;
-	    case 409: player->AddItem(14250, 1); goto l400; break;
-	    case 410: player->AddItem(14248, 1); goto l400; break;
-	    case 411: player->AddItem(14255, 1); goto l400; break;
+	    case 402: player->SetRandItId(9906); goto l276276; break;
+	    case 403: player->SetRandItId(9907); goto l276276; break;
+	    case 404: player->SetRandItId(9908); goto l276276; break;
+	    case 405: player->SetRandItId(9909); goto l276276; break;
+	    case 406: player->SetRandItId(9910); goto l276276; break;
+	    case 407: player->SetRandItId(14247); goto l276276; break;
+	    case 408: player->SetRandItId(14253); goto l276276; break;
+	    case 409: player->SetRandItId(14250); goto l276276; break;
+	    case 410: player->SetRandItId(14248); goto l276276; break;
+	    case 411: player->SetRandItId(14255); goto l276276; break;
 
-/////////////////////// BRIGADE CAPITAINE /////////////////////////////
-
-l500 :
     case 550:
+        player->SetRandRetour(action);
         player->ADD_GOSSIP_ITEM(6, "Cuirasse de capitaine.", GOSSIP_SENDER_MAIN, 552);
         player->ADD_GOSSIP_ITEM(6, "Jambières de capitaine.", GOSSIP_SENDER_MAIN, 553);
         player->ADD_GOSSIP_ITEM(6, "Diademe de capitaine.", GOSSIP_SENDER_MAIN, 554);
@@ -204,30 +220,28 @@ l500 :
         player->ADD_GOSSIP_ITEM(6, "Brassards de la brigade.", GOSSIP_SENDER_MAIN, 567);
         player->ADD_GOSSIP_ITEM(6, "Cape de la brigade.", GOSSIP_SENDER_MAIN, 568);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+        player->SEND_GOSSIP_MENU(1000023, creature->GetGUID());
 		break;
-	    case 552: player->AddItem(7486, 1); goto l500; break;
-	    case 553: player->AddItem(7487, 1); goto l500; break;
-	    case 554: player->AddItem(7488, 1); goto l500; break;
-	    case 555: player->AddItem(7489, 1); goto l500; break;
-		case 556: player->AddItem(7490, 1); goto l500; break;
-	    case 557: player->AddItem(7491, 1); goto l500; break;
-	    case 558: player->AddItem(7492, 1); goto l500; break;
-	    case 559: player->AddItem(7493, 1); goto l500; break;
-	    case 560: player->AddItem(7494, 1); goto l500; break;
-	    case 561: player->AddItem(7495, 1); goto l500; break;
-	    case 562: player->AddItem(9932, 1); goto l500; break;
-	    case 563: player->AddItem(9934, 1); goto l500; break;
-	    case 564: player->AddItem(9926, 1); goto l500; break;
-	    case 565: player->AddItem(9930, 1); goto l500; break;
-	    case 566: player->AddItem(9931, 1); goto l500; break;
-	    case 567: player->AddItem(9927, 1); goto l500; break;
-	    case 568: player->AddItem(9929, 1); goto l500; break;
+	    case 552: player->SetRandItId(7486); goto l276276; break;
+	    case 553: player->SetRandItId(7487); goto l276276; break;
+	    case 554: player->SetRandItId(7488); goto l276276; break;
+	    case 555: player->SetRandItId(7489); goto l276276; break;
+		case 556: player->SetRandItId(7490); goto l276276; break;
+	    case 557: player->SetRandItId(7491); goto l276276; break;
+	    case 558: player->SetRandItId(7492); goto l276276; break;
+	    case 559: player->SetRandItId(7493); goto l276276; break;
+	    case 560: player->SetRandItId(7494); goto l276276; break;
+	    case 561: player->SetRandItId(7495); goto l276276; break;
+	    case 562: player->SetRandItId(9932); goto l276276; break;
+	    case 563: player->SetRandItId(9934); goto l276276; break;
+	    case 564: player->SetRandItId(9926); goto l276276; break;
+	    case 565: player->SetRandItId(9930); goto l276276; break;
+	    case 566: player->SetRandItId(9931); goto l276276; break;
+	    case 567: player->SetRandItId(9927); goto l276276; break;
+	    case 568: player->SetRandItId(9929); goto l276276; break;
 
-/////////////////////// CHEVAUCHEUR/FORESTIER /////////////////////////////
-
-l600 :
     case 600:
+        player->SetRandRetour(action);
         player->ADD_GOSSIP_ITEM(6, "Ceinture de chevaucheur de loup.", GOSSIP_SENDER_MAIN, 602);
         player->ADD_GOSSIP_ITEM(6, "Bottes de chevaucheur de loup.", GOSSIP_SENDER_MAIN, 603);
         player->ADD_GOSSIP_ITEM(6, "Cape de chevaucheur de loup.", GOSSIP_SENDER_MAIN, 604);
@@ -244,28 +258,26 @@ l600 :
         player->ADD_GOSSIP_ITEM(6, "Corde de forestier.", GOSSIP_SENDER_MAIN, 615);
         player->ADD_GOSSIP_ITEM(6, "Cape de forestier.", GOSSIP_SENDER_MAIN, 616);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+        player->SEND_GOSSIP_MENU(1000023, creature->GetGUID());
 	break;
-	    case 602: player->AddItem(15369, 1); goto l600; break;
-	    case 603: player->AddItem(15370, 1); goto l600; break;
-	    case 604: player->AddItem(15371, 1); goto l600; break;
-		case 605: player->AddItem(15372, 1); goto l600; break;
-	    case 606: player->AddItem(15374, 1); goto l600; break;
-	    case 607: player->AddItem(15375, 1); goto l600; break;
-	    case 608: player->AddItem(15377, 1); goto l600; break;		
-	    case 609: player->AddItem(7478, 1); goto l600; break;
-	    case 610: player->AddItem(7479, 1); goto l600; break;
-	    case 611: player->AddItem(7481, 1); goto l600; break;
-	    case 612: player->AddItem(7482, 1); goto l600; break;
-	    case 613: player->AddItem(7480, 1); goto l600; break;
-	    case 614: player->AddItem(7484, 1); goto l600; break;
-	    case 615: player->AddItem(7485, 1); goto l600; break;
-	    case 616: player->AddItem(7483, 1); goto l600; break;
+	    case 602: player->SetRandItId(15369); goto l276276; break;
+	    case 603: player->SetRandItId(15370); goto l276276; break;
+	    case 604: player->SetRandItId(15371); goto l276276; break;
+		case 605: player->SetRandItId(15372); goto l276276; break;
+	    case 606: player->SetRandItId(15374); goto l276276; break;
+	    case 607: player->SetRandItId(15375); goto l276276; break;
+	    case 608: player->SetRandItId(15377); goto l276276; break;		
+	    case 609: player->SetRandItId(7478); goto l276276; break;
+	    case 610: player->SetRandItId(7479); goto l276276; break;
+	    case 611: player->SetRandItId(7481); goto l276276; break;
+	    case 612: player->SetRandItId(7482); goto l276276; break;
+	    case 613: player->SetRandItId(7480); goto l276276; break;
+	    case 614: player->SetRandItId(7484); goto l276276; break;
+	    case 615: player->SetRandItId(7485); goto l276276; break;
+	    case 616: player->SetRandItId(7483); goto l276276; break;
 
-/////////////////////// SORCIER /////////////////////////////
-
-l700 :
     case 700:
+        player->SetRandRetour(action);
         player->ADD_GOSSIP_ITEM(6, "Drapé de sorcier.", GOSSIP_SENDER_MAIN, 702);
         player->ADD_GOSSIP_ITEM(6, "Sphere de sorcier.", GOSSIP_SENDER_MAIN, 703);
         player->ADD_GOSSIP_ITEM(6, "Robe de sorcier.", GOSSIP_SENDER_MAIN, 704);
@@ -278,24 +290,22 @@ l700 :
         player->ADD_GOSSIP_ITEM(6, "Bracelets de sorcier.", GOSSIP_SENDER_MAIN, 711);
         player->ADD_GOSSIP_ITEM(6, "Cape de sorcier.", GOSSIP_SENDER_MAIN, 712);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+        player->SEND_GOSSIP_MENU(1000023, creature->GetGUID());
 		break;
-	    case 702: player->AddItem(9874, 1); goto l700; break;
-	    case 703: player->AddItem(9882, 1); goto l700; break;
-	    case 704: player->AddItem(9884, 1); goto l700; break;
-	    case 705: player->AddItem(9883, 1); goto l700; break;
-	    case 706: player->AddItem(9878, 1); goto l700; break;
-	    case 707: player->AddItem(9881, 1); goto l700; break;
-	    case 708: player->AddItem(9876, 1); goto l700; break;
-	    case 709: player->AddItem(9880, 1); goto l700; break;
-	    case 710: player->AddItem(9875, 1); goto l700; break;
-	    case 711: player->AddItem(9879, 1); goto l700; break;
-	    case 712: player->AddItem(9877, 1); goto l700; break;
+	    case 702: player->SetRandItId(9874); goto l276276; break;
+	    case 703: player->SetRandItId(9882); goto l276276; break;
+	    case 704: player->SetRandItId(9884); goto l276276; break;
+	    case 705: player->SetRandItId(9883); goto l276276; break;
+	    case 706: player->SetRandItId(9878); goto l276276; break;
+	    case 707: player->SetRandItId(9881); goto l276276; break;
+	    case 708: player->SetRandItId(9876); goto l276276; break;
+	    case 709: player->SetRandItId(9880); goto l276276; break;
+	    case 710: player->SetRandItId(9875); goto l276276; break;
+	    case 711: player->SetRandItId(9879); goto l276276; break;
+	    case 712: player->SetRandItId(9877); goto l276276; break;
 
-/////////////////////// PISTEUR / IMPOSANT /////////////////////////////
-
-l800 :
     case 800:
+        retour = action;
         player->ADD_GOSSIP_ITEM(6, "Ceinture de pisteur.", GOSSIP_SENDER_MAIN, 802);
         player->ADD_GOSSIP_ITEM(6, "Bottes de pisteur.", GOSSIP_SENDER_MAIN, 803);
         player->ADD_GOSSIP_ITEM(6, "Gants de pisteur.", GOSSIP_SENDER_MAIN, 804);
@@ -306,23 +316,21 @@ l800 :
         player->ADD_GOSSIP_ITEM(6, "Brassards imposants.", GOSSIP_SENDER_MAIN, 809);
         player->ADD_GOSSIP_ITEM(6, "Cape imposante.", GOSSIP_SENDER_MAIN, 810);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+        player->SEND_GOSSIP_MENU(1000023, creature->GetGUID());
 		break;
-	    case 802: player->AddItem(9916, 1); goto l800; break;
-	    case 803: player->AddItem(9917, 1); goto l800; break;
-	    case 804: player->AddItem(9920, 1); goto l800; break;
-	    case 805: player->AddItem(9925, 1); goto l800; break;
-	    case 806: player->AddItem(9919, 1); goto l800; break;
-	    case 807: player->AddItem(15169, 1); goto l800; break;
-	    case 808: player->AddItem(15161, 1); goto l800; break;
-	    case 809: player->AddItem(15163, 1); goto l800; break;
-	    case 810: player->AddItem(15165, 1); goto l800; break;
+	    case 802: player->SetRandItId(9916); goto l276276; break;
+	    case 803: player->SetRandItId(9917); goto l276276; break;
+	    case 804: player->SetRandItId(9920); goto l276276; break;
+	    case 805: player->SetRandItId(9925); goto l276276; break;
+	    case 806: player->SetRandItId(9919); goto l276276; break;
+	    case 807: player->SetRandItId(15169); goto l276276; break;
+	    case 808: player->SetRandItId(15161); goto l276276; break;
+	    case 809: player->SetRandItId(15163); goto l276276; break;
+	    case 810: player->SetRandItId(15165); goto l276276; break;
 
-/////////////////////// ANCIEN/MAILLE /////////////////////////////
-
-l900 :
     case 900:
-        player->ADD_GOSSIP_ITEM(6, "Greves anciennes.", GOSSIP_SENDER_MAIN, 902);
+        player->SetRandRetour(action);
+        player->ADD_GOSSIP_ITEM(6, "Grêves anciennes.", GOSSIP_SENDER_MAIN, 902);
         player->ADD_GOSSIP_ITEM(6, "Garde-jambes des anciens.", GOSSIP_SENDER_MAIN, 903);
         player->ADD_GOSSIP_ITEM(6, "Espauliers des anciens.", GOSSIP_SENDER_MAIN, 904);
         player->ADD_GOSSIP_ITEM(6, "Protege-bras anciens.", GOSSIP_SENDER_MAIN, 905);
@@ -334,23 +342,22 @@ l900 :
         player->ADD_GOSSIP_ITEM(6, "Cape de la maille d'os.", GOSSIP_SENDER_MAIN, 911);
         player->ADD_GOSSIP_ITEM(6, "Ceinture de la maille d'os.", GOSSIP_SENDER_MAIN, 912);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+        player->SEND_GOSSIP_MENU(1000023, creature->GetGUID());
 		break;
-	    case 902: player->AddItem(15599, 1); goto l900; break;
-	    case 903: player->AddItem(15607, 1); goto l900; break;
-	    case 904: player->AddItem(15608, 1); goto l900; break;
-	    case 905: player->AddItem(15600, 1); goto l900; break;
-	    case 906: player->AddItem(15605, 1); goto l900; break;
-	    case 907: player->AddItem(15603, 1); goto l900; break;
-	    case 908: player->AddItem(15606, 1); goto l900; break;
-	    case 909: player->AddItem(15612, 1); goto l900; break;
-	    case 910: player->AddItem(15610, 1); goto l900; break;
-	    case 911: player->AddItem(15611, 1); goto l900; break;
-	    case 912: player->AddItem(15613, 1); goto l900; break;
+	    case 902: player->SetRandItId(15599); goto l276276; break;
+	    case 903: player->SetRandItId(15607); goto l276276; break;
+	    case 904: player->SetRandItId(15608); goto l276276; break;
+	    case 905: player->SetRandItId(15600); goto l276276; break;
+	    case 906: player->SetRandItId(15605); goto l276276; break;
+	    case 907: player->SetRandItId(15603); goto l276276; break;
+	    case 908: player->SetRandItId(15606); goto l276276; break;
+	    case 909: player->SetRandItId(15612); goto l276276; break;
+	    case 910: player->SetRandItId(15610); goto l276276; break;
+	    case 911: player->SetRandItId(15611); goto l276276; break;
+	    case 912: player->SetRandItId(15613); goto l276276; break;
 
-/////////////////////// Veneur /////////////////////////////
-l950 :
     case 950:
+        player->SetRandRetour(action);
         player->ADD_GOSSIP_ITEM(6, "Bottes de veneur.", GOSSIP_SENDER_MAIN, 952);
         player->ADD_GOSSIP_ITEM(6, "Poignets de veneur.", GOSSIP_SENDER_MAIN, 953);
         player->ADD_GOSSIP_ITEM(6, "Armure de veneur.", GOSSIP_SENDER_MAIN, 954);
@@ -361,17 +368,38 @@ l950 :
         player->ADD_GOSSIP_ITEM(6, "Jambières de veneur.", GOSSIP_SENDER_MAIN, 959);
         player->ADD_GOSSIP_ITEM(6, "Epaulieres de veneur.", GOSSIP_SENDER_MAIN, 960);
         player->ADD_GOSSIP_ITEM(20, "= Retour =", GOSSIP_SENDER_MAIN, 100);
-        player->SEND_GOSSIP_MENU(1000009, creature->GetGUID());
+        player->SEND_GOSSIP_MENU(1000023, creature->GetGUID());
 		break;
-	    case 952: player->AddItem(9885, 1); goto l950; break;
-		case 953: player->AddItem(9886, 1); goto l950; break;
-	    case 954: player->AddItem(9887, 1); goto l950; break;
-	    case 955: player->AddItem(9889, 1); goto l950; break;
-	    case 956: player->AddItem(9890, 1);	goto l950; break;
-	    case 957: player->AddItem(9891, 1); goto l950; break;
-	    case 958: player->AddItem(9892, 1); goto l950; break;
-	    case 959: player->AddItem(9893, 1); goto l950; break;
-	    case 960: player->AddItem(9894, 1); goto l950; break;
+	    case 952: player->SetRandItId(9885); goto l276276; break;
+		case 953: player->SetRandItId(9886); goto l276276; break;
+	    case 954: player->SetRandItId(9887); goto l276276; break;
+	    case 955: player->SetRandItId(9889); goto l276276; break;
+	    case 956: player->SetRandItId(9890); goto l276276; break;
+	    case 957: player->SetRandItId(9891); goto l276276; break;
+	    case 958: player->SetRandItId(9892); goto l276276; break;
+	    case 959: player->SetRandItId(9893); goto l276276; break;
+	    case 960: player->SetRandItId(9894); goto l276276; break;
+
+l276276:
+		case 9999:
+			lmenu:
+			player->PlayerTalkClass->ClearMenus();
+			player->SetRandRis(RandItemSuffix(player->GetRandItId()));
+			player->SetRandRie(RandItemEnch(player->GetRandItId()));
+			for (count=0; count<31; count++) {
+				if (player->GetRandRie()[count] == 2) goto lmenu2;
+				player->ADD_GOSSIP_ITEM(6, " " + player->GetRandRis()[count], GOSSIP_SENDER_MAIN, 10001+count); }
+			lmenu2:
+			player->ADD_GOSSIP_ITEM(0, "<Retour>", GOSSIP_SENDER_MAIN, player->GetRandRetour());
+			player->SEND_GOSSIP_MENU(1000023, creature->GetGUID());
+			break;
+
+		case 10001: case 10002: case 10003: case 10004: case 10005: case 10006: case 10007: case 10008: case 10009: case 10010:
+		case 10011: case 10012: case 10013: case 10014: case 10015: case 10016: case 10017: case 10018: case 10019: case 10020:
+		case 10021: case 10022: case 10023: case 10024: case 10025: case 10026: case 10027: case 10028: case 10029: case 10030:
+
+			AddItemChoix(player, player->GetRandItId(), player->GetRandRie()[action-10001]);
+			goto lmenu; break;
 		}
 	return true; }
 };
