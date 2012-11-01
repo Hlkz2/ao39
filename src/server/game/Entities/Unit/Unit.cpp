@@ -10272,7 +10272,7 @@ uint32 Unit::SpellDamageBonusDone(Unit* victim, SpellInfo const* spellProto, uin
             return owner->SpellDamageBonusDone(victim, spellProto, pdamage, damagetype);
 
     // Done total percent damage auras
-    float DoneTotalMod = 1.0f;
+    float DoneTotalMod = 0.7f;
     float ApCoeffMod = 1.0f;
     int32 DoneTotal = 0;
 
@@ -11076,7 +11076,7 @@ uint32 Unit::SpellHealingBonusDone(Unit* victim, SpellInfo const* spellProto, ui
     if (spellProto->SpellFamilyName == SPELLFAMILY_POTION)
         return healamount;
 
-    float DoneTotalMod = 1.0f;
+    float DoneTotalMod = 0.85f; //custom nerf
     int32 DoneTotal = 0;
 
     // Healing done percent
@@ -11576,7 +11576,7 @@ uint32 Unit::MeleeDamageBonusDone(Unit* victim, uint32 pdamage, WeaponAttackType
     }
 
     // Done total percent damage auras
-    float DoneTotalMod = 1.0f;
+    float DoneTotalMod = 0.7f;
 
     // Some spells don't benefit from pct done mods
     if (spellProto)
